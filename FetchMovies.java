@@ -2,7 +2,9 @@ package com.spellflight.android.popularmovies;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -26,7 +28,7 @@ public class FetchMovies extends AsyncTask {
                 this is usually the data type of the return type from the onPostExecute() method
         4. the methods in the AsyncTask class that can be overriden
             onPreExecute() called in the UI thread before task executes (before you use the execute() method on the task), used to setup the task (like show progress bar in UI)
-            doInBackground(params) called on background thread/inside of AsyncTask after onPreExecute finishes executing, used to peform the background task, params listed in AsyncTask class signature are passed into this method, result of this step are returned by this method and passed back to onPostExecute() method, THIS IS WHERE YOU PUT ALL OF THE CODE TO DO WHATEVER THE TASK IS THAT NEEDS TO BE DONE WHICH MEANS THIS METHOD CAN BE HUGE AND IT'S OKAY
+            doInBackground(params) called on background thread/inside of AsyncTask after onPreExecute finishes executing, used to peform the background task, params listed in AsyncTask class signature are passed into this method, result of this step are returned by this method and passed back to onPostExecute() method, THIS IS WHERE YOU PUT ALL OF THE CODE TO DO WHATEVER THE TASK IS THAT NEEDS TO BE done WHICH MEANS THIS METHOD CAN BE HUGE AND IT'S OKAY
             onProgressUpdate(progress) called in UI thread after publishProgress(progress) , used to display any form of progress in UI while background task is executing (like progress bar, etc)
             onPostExecute(result) called in UI thread after background task finishes, result of doInBackground() is passed to this step as a parameter
         5. ground rules for use:
@@ -41,17 +43,33 @@ public class FetchMovies extends AsyncTask {
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
     protected Object doInBackground(Object[] objects) {
+
+        //TODO: check variables here to see if they need access modifier private or not
+        final String TAG = "URL error";
+        //DONE: add API key but make sure to check how to proceed when upload to GIT
         //create URL object
         final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/popular?";
-        //TODO: add API key but make sure to check how to proceed when upload to GIT
         final String API_KEY_PARAM = "api_key";
         final String LANGUAGE_PARAM = "language";
 
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendQueryParameter(API_KEY_PARAM,).appendQueryParameter(LANGUAGE_PARAM, "en-US" )
-                .build();
-        //TODO: add try/catch block to handle this malformed URL exception then error will be removed
-        URL url = new URL(builtUri.toString());
 
-    }
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+                .appendQueryParameter(API_KEY_PARAM, " ").appendQueryParameter(LANGUAGE_PARAM, "en-US" )
+                .build();
+
+        //DONE: add try/catch block to handle this malformed URL exception then error will be removed
+        try {
+            URL url = new URL(builtUri.toString());
+            System.out.println(url.toString());
+        }
+        catch (MalformedURLException m) {
+            Log.d(TAG, "doInBackground: ");
+            System.out.println(TAG);
+        }
+
+        //TODO: 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
+
+        //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
+
+         }
 }

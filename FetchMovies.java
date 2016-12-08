@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Kim Kirk on 11/14/2016.
@@ -23,6 +26,7 @@ import java.net.URL;
 public class FetchMovies extends AsyncTask {
 
     private String lineOfText = null;
+    private ArrayList posterArray = new ArrayList();
     
 
 
@@ -55,7 +59,8 @@ public class FetchMovies extends AsyncTask {
     //TODO: check if parameter type is accurate and return type is accurate
     protected Object doInBackground(Object[] objects) {
 
-        fetchDataFromServer();
+       fetchDataFromServer();
+        getDataFromJson();
 
         //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
     }
@@ -63,11 +68,21 @@ public class FetchMovies extends AsyncTask {
 
 
 
-    //gets data from json object
-    // DESIGN: 12/6/2016  take string that has data in json format, create json object and pass string to it,
-        // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
+    //get poster path arraylist to use in ImageAdapterView class
+    public ArrayList getPosterPathArrayList () {
+        return posterArray;
+    }
 
-    public void getDataFromJson () {
+
+
+
+    //gets data from json object
+    // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
+
+    //TESTING: FULL METHOD PASSED
+    public void getDataFromJson () throws Exception {
+
+        final String badJson = "check JSON object or JSON array";
 
         /*Json object has a json array inside of it
         json array is= results
@@ -76,15 +91,31 @@ public class FetchMovies extends AsyncTask {
 
         // bufferedreader holds json so need to create json object and json array to extract needed data
         //pull data from the reader object into a json object
-
+        try {
+            JSONObject jsonObject = new JSONObject(lineOfText);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonArrayJSONObject = jsonArray.getJSONObject(i);
+                //go into object and use key to get value
+                String value = jsonArrayJSONObject.getString("poster_path");
+                Log.d("toString check", "doInBackground: " + value);
+                //put each String equivalent into arraylist
+                posterArray.add(value);
+                Log.d("arrayList check", "doInBackground: " + posterArray.get(i));
+            }
+        }
+        catch (JSONException jse) {
+            Log.d(badJson, "getDataFromJson: ");
+        }
 
         //DONE: 3rd - 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
 
-        //TODO: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
+        //DONE: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
 
-        // TODO: 2nd - 11/10/2016 create array that holds image data from moviedb server, hold in a variable, replace imageArray above with variable name
+        // DONE: 2nd - 11/10/2016 create array that holds image data from moviedb server, hold in a variable, replace imageArray above with variable name
 
-        // DESIGN: 12/2/2016 add conditional statement so that you can choose which data to pull from the array so that you can make this method public and use the results in ImageAdapterView class 
+        // DESIGN: 12/2/2016 add conditional statement so that you can choose which data to pull from the array so that you can make this method public and use the results in ImageAdapterView class
+
     }
 
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private GridView gridView;
+    private FetchMovies posterPath = new FetchMovies();
 
 
     @Override
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // TODO: 12/2/2016 add name of array that holds data
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, arrayNamePlaceHolder);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 

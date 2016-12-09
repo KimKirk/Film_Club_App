@@ -2,7 +2,6 @@ package com.spellflight.android.popularmovies;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -19,11 +18,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kim Kirk on 11/14/2016.
  */
-public class FetchMovies extends AsyncTask {
+public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     private String lineOfText = null;
     private ArrayList posterArray = new ArrayList();
@@ -54,12 +54,16 @@ public class FetchMovies extends AsyncTask {
         7. call execute(params) on the task instance
             this starts the background thread */
 
+    // TODO: 12/8/2016 see evernote All Tasks "next steps to get adapter working" 
+    // TODO: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies" 
+
 
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
-    protected Object doInBackground(Object[] objects) {
+    //should return result that onPostExecute() will need as input param
+    protected Object doInBackground(Params...params) throws Exception {
 
-       fetchDataFromServer();
+       getDataFromServer();
         getDataFromJson();
 
         //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
@@ -69,7 +73,7 @@ public class FetchMovies extends AsyncTask {
 
 
     //get poster path arraylist to use in ImageAdapterView class
-    public ArrayList getPosterPathArrayList () {
+    public List getPosterPathArrayList () {
         return posterArray;
     }
 
@@ -80,6 +84,7 @@ public class FetchMovies extends AsyncTask {
     // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
 
     //TESTING: FULL METHOD PASSED
+    //should return an arraylist to whomever called it so they can use that arraylist
     public void getDataFromJson () throws Exception {
 
         final String badJson = "check JSON object or JSON array";
@@ -123,7 +128,7 @@ public class FetchMovies extends AsyncTask {
     //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
     //fetches data from the server
     //TESTING: FULL METHOD PASSED
-    protected void fetchDataFromServer() throws Exception  {
+    protected void getDataFromServer() throws Exception  {
         //DONE: check variables here to see if they need access modifier private or not
         //DONE: add API key but make sure to check how to proceed when upload to GIT
         final String badUrl = "check URL";
@@ -174,16 +179,16 @@ public class FetchMovies extends AsyncTask {
             // DONE: 12/2/2016 check for condition that would create IOException, this will propogate the exception to another method with catch block for IOException
             }
         catch (ProtocolException pr) {
-            Log.d( badProtocolRequest , "fetchDataFromServer: ");
+            Log.d( badProtocolRequest , "getDataFromServer: ");
         }
         catch (UnsupportedEncodingException uc) {
-            Log.d(badEncoding, "fetchDataFromServer: ");
+            Log.d(badEncoding, "getDataFromServer: ");
         }
         catch (NullPointerException np) {
-            Log.d(badConnectionObject, "fetchDataFromServer: ");
+            Log.d(badConnectionObject, "getDataFromServer: ");
         }
         catch (IOException io) {
-            Log.d(badIoException, "fetchDataFromServer: ");
+            Log.d(badIoException, "getDataFromServer: ");
 
 
         } finally {

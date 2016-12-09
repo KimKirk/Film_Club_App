@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TESTING: NOT TESTED
-        // TODO: 12/2/2016 add name of array that holds data
+        // DONE: 12/2/2016 add name of array that holds data
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            new FetchMovies().execute();
+            posterPath.execute();
             // TODO: 12/2/2016 remove line below
             Log.d("Network is up", "startTask: ");
         } else {

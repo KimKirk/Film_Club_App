@@ -85,7 +85,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     //TESTING: FULL METHOD PASSED
     //should return an arraylist to whomever called it so they can use that arraylist
-    public void getDataFromJson () throws Exception {
+    public List getDataFromJson () throws Exception {
 
         final String badJson = "check JSON object or JSON array";
 
@@ -112,15 +112,17 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
         catch (JSONException jse) {
             Log.d(badJson, "getDataFromJson: ");
         }
+        finally {
+                if (posterArray.isEmpty()) {
+                    return null;
+                }
+            return posterArray;
+        }
 
         //DONE: 3rd - 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
-
         //DONE: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
-
         // DONE: 2nd - 11/10/2016 create array that holds image data from moviedb server, hold in a variable, replace imageArray above with variable name
-
         // DESIGN: 12/2/2016 add conditional statement so that you can choose which data to pull from the array so that you can make this method public and use the results in ImageAdapterView class
-
     }
 
 

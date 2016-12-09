@@ -60,21 +60,37 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
+    //// TODO: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
     //should return result that onPostExecute() will need as input param
     protected List doInBackground(Params...params) throws Exception {
 
        String dataFromServer = getDataFromServer();
         List dataFromJson = getDataFromJson(dataFromServer);
+        if (dataFromJson.isEmpty()){
+            return null;
+        }
         return dataFromJson;
 
         //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
     }
 
 
-
+    //this is called by AndroidOS
+    // FIXME: 12/9/2016 figure out why this is telling me it isn't overriding
+    @Override
+    protected void onPostExecute(List result) {
+        if (result != null) {
+            //clear the arrayadapter of old stuff
+            arrayAdapterPlaceHolder.clear();
+            //go through each element in the arraylist and add each element to the arrayadapter
+            for (String variableThatHoldsElementInList : result) {
+                arrayAdapterPlaceHolder.add(variableThatHoldsElementInList);
+            }
+        }
+    }
 
     //get poster path arraylist to use in ImageAdapterView class
-    public List getPosterPathArrayList () {
+    public ArrayList getPosterPathArrayList () {
         return posterArray;
     }
 

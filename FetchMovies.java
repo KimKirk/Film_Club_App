@@ -61,10 +61,11 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
     //should return result that onPostExecute() will need as input param
-    protected Object doInBackground(Params...params) throws Exception {
+    protected List doInBackground(Params...params) throws Exception {
 
-       getDataFromServer();
-        getDataFromJson();
+       String dataFromServer = getDataFromServer();
+        List dataFromJson = getDataFromJson(dataFromServer);
+        return dataFromJson;
 
         //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
     }
@@ -85,7 +86,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     //TESTING: FULL METHOD PASSED
     //should return an arraylist to whomever called it so they can use that arraylist
-    public List getDataFromJson () throws Exception {
+    public List getDataFromJson (String text) throws Exception {
 
         final String badJson = "check JSON object or JSON array";
 
@@ -97,7 +98,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
         // bufferedreader holds json so need to create json object and json array to extract needed data
         //pull data from the reader object into a json object
         try {
-            JSONObject jsonObject = new JSONObject(lineOfText);
+            JSONObject jsonObject = new JSONObject(text);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonArrayJSONObject = jsonArray.getJSONObject(i);
@@ -198,6 +199,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
                 if (inputStream != null) {
 
                     inputStream.close();
+                    return null;
                 }
             }
             catch (IOException ioe) {

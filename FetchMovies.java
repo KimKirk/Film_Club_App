@@ -128,7 +128,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
     //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
     //fetches data from the server
     //TESTING: FULL METHOD PASSED
-    protected void getDataFromServer() throws Exception  {
+    protected String getDataFromServer() throws Exception  {
         //DONE: check variables here to see if they need access modifier private or not
         //DONE: add API key but make sure to check how to proceed when upload to GIT
         final String badUrl = "check URL";
@@ -202,6 +202,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
                 Log.d(badIoException, "doInBackground: ");
             }
             connection.disconnect();
+            return lineOfText;
         }
     }
 }

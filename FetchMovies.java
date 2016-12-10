@@ -19,6 +19,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.xml.transform.Result;
 
@@ -64,7 +65,7 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
 
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
-    //// FIXME: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
+    //// DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
     //should return result that onPostExecute() will need as input param
     protected List doInBackground(String...params) {
         String badMethodCall = "bad method call(s)";
@@ -84,21 +85,30 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
 
 
         //this is called by AndroidOS
-    // FIXME: 12/9/2016 figure out why this is telling me it isn't overriding
+    // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
     @Override
     protected void onPostExecute(List result) {
         if (result != null) {
             //clear the arrayadapter of old stuff
-            arrayAdapterPlaceHolder.clear();
+            result.clear();
             //go through each element in the arraylist and add each element to the arrayadapter
-            for (String variableThatHoldsElementInList : result) {
-                arrayAdapterPlaceHolder.add(variableThatHoldsElementInList);
+            //create an iterator for the result List
+            ListIterator resultIterator = result.listIterator();
+            while (resultIterator.hasNext()) {
+                //get the element in the current position
+                //add the element to the arrayAdapter
+                arrayAdapterPlaceHolder.add(resultIterator.next());
             }
         }
+
+        //for (String variableThatHoldsElementInList : result) {
+        //arrayAdapterPlaceHolder.add(variableThatHoldsElementInList);
+
         else {
             //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
         }
     }
+
 
 
 

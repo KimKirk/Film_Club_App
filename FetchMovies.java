@@ -94,6 +94,9 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
                 arrayAdapterPlaceHolder.add(variableThatHoldsElementInList);
             }
         }
+        else {
+            //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
+        }
     }
 
     //get poster path arraylist to use in ImageAdapterView class

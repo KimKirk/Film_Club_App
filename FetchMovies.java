@@ -20,10 +20,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.Result;
+
 /**
  * Created by Kim Kirk on 11/14/2016.
  */
-public class FetchMovies extends AsyncTask <Void, Void, Void> {
+public class FetchMovies extends AsyncTask <String, Void, List> {
 
     private String lineOfText = null;
     private ArrayList posterArray = new ArrayList();
@@ -64,7 +66,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
     //TODO: check if parameter type is accurate and return type is accurate
     //// FIXME: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
     //should return result that onPostExecute() will need as input param
-    protected List doInBackground(Params...params)  {
+    protected List doInBackground(String...params)  {
         String badMethodCall = "bad method call(s)";
         try {
             dataFromServer = getDataFromServer();

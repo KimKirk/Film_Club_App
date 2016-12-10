@@ -66,7 +66,7 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
     //TODO: check if parameter type is accurate and return type is accurate
     //// FIXME: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
     //should return result that onPostExecute() will need as input param
-    protected List doInBackground(String...params)  {
+    protected List doInBackground(String...params) {
         String badMethodCall = "bad method call(s)";
         try {
             dataFromServer = getDataFromServer();
@@ -74,8 +74,7 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
             if (dataFromJson.isEmpty()) {
                 return null;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Log.d(badMethodCall, "doInBackground: ");
             return null;
         }
@@ -84,7 +83,7 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
     }
 
 
-    //this is called by AndroidOS
+        //this is called by AndroidOS
     // FIXME: 12/9/2016 figure out why this is telling me it isn't overriding
     @Override
     protected void onPostExecute(List result) {
@@ -101,6 +100,8 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
         }
     }
 
+
+
     //get poster path arraylist to use in ImageAdapterView class
     public ArrayList getPosterPathArrayList () {
         return posterArray;
@@ -111,17 +112,11 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
 
     //gets data from json object
     // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
-
-    //TESTING: retest method
+    //TESTING: PASSED TEST
     //should return an arraylist to whomever called it so they can use that arraylist
-    public List getDataFromJson (String text) throws Exception {
+    public List getDataFromJson(String text) throws Exception {
 
         final String badJson = "check JSON object or JSON array";
-
-        /*Json object has a json array inside of it
-        json array is= results
-        element 0 = poster_path
-        element 1= poster_path*/
 
         // bufferedreader holds json so need to create json object and json array to extract needed data
         //pull data from the reader object into a json object
@@ -137,17 +132,14 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
                 posterArray.add(value);
                 Log.d("arrayList check", "doInBackground: " + posterArray.get(i));
             }
-        }
-        catch (JSONException jse) {
+        } catch (JSONException jse) {
             Log.d(badJson, "getDataFromJson: ");
-        }
-        finally {
-                if (posterArray.isEmpty()) {
-                    return null;
-                }
+        } finally {
+            if (posterArray.isEmpty()) {
+                return null;
+            }
             return posterArray;
         }
-
         //DONE: 3rd - 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
         //DONE: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
         // DONE: 2nd - 11/10/2016 create array that holds image data from moviedb server, hold in a variable, replace imageArray above with variable name
@@ -156,12 +148,13 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
 
 
 
+
+
     //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
     //fetches data from the server
-    //TESTING: retest method
-    protected String getDataFromServer() throws Exception  {
-        //DONE: check variables here to see if they need access modifier private or not
-        //DONE: add API key but make sure to check how to proceed when upload to GIT
+    //TESTING: PASSED TEST
+    protected String getDataFromServer() throws Exception {
+
         final String badUrl = "check URL";
         final String badProtocolRequest = "check setRequestMethod()";
         final String badEncoding = "check InputStreamReader";
@@ -177,23 +170,19 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
         HttpURLConnection connection = null;
         Uri builtUri;
 
-
-        //TESTING: PASSED
         try {
             //FIXME: key is 821d4fff9880f197021eaccba83fb04f
             // FIXME: 12/2/2016 here is the final url that shows the data you will get from server https://api.themoviedb.org/3/movie/popular?&api_key=821d4fff9880f197021eaccba83fb04f&language=en-US
 
             builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                    .appendQueryParameter(API_KEY_PARAM, " ").appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                    .appendQueryParameter(API_KEY_PARAM, "").appendQueryParameter(LANGUAGE_PARAM, "en-US")
                     .build();
             url = new URL(builtUri.toString());
-        } catch (MalformedURLException m) {
+        }
+        catch (MalformedURLException m) {
             Log.d(badUrl, "doInBackground: ");
-            System.out.println(badUrl);
         }
 
-
-        //TESTING: retest
         //opens the http connection and the stream, streams in data
         try {
             connection = (HttpURLConnection) url.openConnection();
@@ -207,31 +196,25 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
             //take data in reader and convert to a string to be used as input to json object in other method
             lineOfText = reader.readLine();
 
-            // DONE: 12/2/2016 check for condition that would create IOException, this will propogate the exception to another method with catch block for IOException
-            }
-        catch (ProtocolException pr) {
-            Log.d( badProtocolRequest , "getDataFromServer: ");
-        }
-        catch (UnsupportedEncodingException uc) {
+        } catch (ProtocolException pr) {
+            Log.d(badProtocolRequest, "getDataFromServer: ");
+        } catch (UnsupportedEncodingException uc) {
             Log.d(badEncoding, "getDataFromServer: ");
-        }
-        catch (NullPointerException np) {
+        } catch (NullPointerException np) {
             Log.d(badConnectionObject, "getDataFromServer: ");
-        }
-        catch (IOException io) {
+        } catch (IOException io) {
             Log.d(badIoException, "getDataFromServer: ");
 
 
         } finally {
-            try{
+            try {
                 if (inputStream != null) {
 
                     inputStream.close();
-                    return null;
                 }
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 Log.d(badIoException, "doInBackground: ");
+                return null;
             }
             connection.disconnect();
             return lineOfText;

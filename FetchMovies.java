@@ -27,6 +27,8 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     private String lineOfText = null;
     private ArrayList posterArray = new ArrayList();
+    String dataFromServer;
+    List dataFromJson;
     
 
 
@@ -60,17 +62,22 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     @Override
     //TODO: check if parameter type is accurate and return type is accurate
-    //// TODO: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
+    //// FIXME: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
     //should return result that onPostExecute() will need as input param
-    protected List doInBackground(Params...params) throws Exception {
-
-       String dataFromServer = getDataFromServer();
-        List dataFromJson = getDataFromJson(dataFromServer);
-        if (dataFromJson.isEmpty()){
+    protected List doInBackground(Params...params)  {
+        String badMethodCall = "bad method call(s)";
+        try {
+            dataFromServer = getDataFromServer();
+            dataFromJson = getDataFromJson(dataFromServer);
+            if (dataFromJson.isEmpty()) {
+                return null;
+            }
+        }
+        catch (Exception ex) {
+            Log.d(badMethodCall, "doInBackground: ");
             return null;
         }
         return dataFromJson;
-
         //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
     }
 
@@ -100,7 +107,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
     //gets data from json object
     // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
 
-    //TESTING: FULL METHOD PASSED
+    //TESTING: retest method
     //should return an arraylist to whomever called it so they can use that arraylist
     public List getDataFromJson (String text) throws Exception {
 
@@ -146,7 +153,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
 
     //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
     //fetches data from the server
-    //TESTING: FULL METHOD PASSED
+    //TESTING: retest method
     protected String getDataFromServer() throws Exception  {
         //DONE: check variables here to see if they need access modifier private or not
         //DONE: add API key but make sure to check how to proceed when upload to GIT
@@ -181,7 +188,7 @@ public class FetchMovies extends AsyncTask <Void, Void, Void> {
         }
 
 
-        //TESTING: PASSED
+        //TESTING: retest
         //opens the http connection and the stream, streams in data
         try {
             connection = (HttpURLConnection) url.openConnection();

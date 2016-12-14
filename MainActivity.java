@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
+    private String dummyValue = "top_rated";
 
 
     @Override
@@ -27,13 +28,14 @@ public class MainActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
-        startTask();
+
+        startTask(arrayAdapter,dummyValue);
     }
 
 
     //TESTING: PASSED
     //checks network connection and starts background thread if connection is good
-    public void startTask() {
+    public void startTask(ArrayAdapter arrayAdapter, String userPreference) {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {

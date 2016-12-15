@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
     private String dummyValue = "top_rated";
+    private ArrayAdapter<String> arrayAdapter;
 
 
     @Override
@@ -24,22 +25,25 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // DONE: 12/2/2016 add name of array that holds data
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
+        arrayAdapter = new ArrayAdapter<>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
 
-        startTask(arrayAdapter,dummyValue);
+        startTask(dummyValue);
+
+
     }
+
 
 
     //TESTING: PASSED
     //checks network connection and starts background thread if connection is good
-    public void startTask(ArrayAdapter arrayAdapter, String userPreference) {
+    public void startTask(String userPreference) {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            posterPath.execute();
+            posterPath.execute(userPreference);
             // TODO: 12/2/2016 remove line below
             Log.d("Network is up", "startTask: ");
         } else {
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
     //TODO: 11/18/2016 ADD CODE THAT SAYS This product uses the TMDb API but is not endorsed or certified by TMDb. with their logo see this page https://www.themoviedb.org/about/logos-attribution
 

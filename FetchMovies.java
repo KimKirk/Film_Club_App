@@ -89,8 +89,9 @@ public class FetchMovies extends AsyncTask <String, Void, List> {
     // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
     @Override
     protected void onPostExecute(List result) {
+        //TODO: CHECK THAT THIS DOES NOT CLEAR THE LIST OF DATA
         if (result != null) {
-            //clear the arrayadapter of old stuff
+            //clear the list of old stuff
             result.clear();
             //go through each element in the arraylist and add each element to the arrayadapter
             //create an iterator for the result List

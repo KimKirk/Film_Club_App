@@ -26,8 +26,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // DONE: 12/2/2016 add name of array that holds data
-        arrayAdapter = new ArrayAdapter<>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
+        arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
@@ -79,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Created by Kim Kirk on 11/14/2016.
      */
-    public static class FetchMovies extends AsyncTask<String, Void, List> {
+    public class FetchMovies extends AsyncTask<String, Void, ArrayList<String>> {
 
         private String lineOfText = null;
-        private ArrayList posterArray = new ArrayList();
+        private ArrayList posterArray = new ArrayList<String>();
         String dataFromServer;
-        List dataFromJson;
+        ArrayList<String> dataFromJson;
 
 
 
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             7. call execute(params) on the task instance
                 this starts the background thread */
 
-        // TODO: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
+        // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
         // TODO: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
 
 
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         //DONE: check if parameter type is accurate and return type is accurate
         //// DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
         //should return result that onPostExecute() will need as input param
-        protected List doInBackground(String...params) {
+        protected ArrayList<String> doInBackground(String...params) {
             String badMethodCall = "bad method call(s)";
             try {
                 dataFromServer = getDataFromServer();
@@ -140,27 +138,30 @@ public class MainActivity extends AppCompatActivity {
             //this is called by AndroidOS
         // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
         @Override
-        protected void onPostExecute(List result) {
+        protected void onPostExecute(ArrayList<String> result) {
             //TODO: CHECK THAT THIS DOES NOT CLEAR THE LIST OF DATA
             if (result != null) {
-                //clear the list of old stuff
-                result.clear();
+                //not first time received result List of items which means arrayadapter has stuff in it already
+                //clear out what is already in arrayadapter so can add new stuff no dups
+                arrayAdapter.clear();
                 //go through each element in the arraylist and add each element to the arrayadapter
                 //create an iterator for the result List
-                ListIterator resultIterator = result.listIterator();
-                while (resultIterator.hasNext()) {
+                //ListIterator resultIterator = result.listIterator();
+                //resultIterator.hasNext()
+                for(String urlPath : result) {
                     //get the element in the current position
                     //add the element to the arrayAdapter
-                    arrayAdapterPlaceHolder.add(resultIterator.next());
+                    arrayAdapter.add(urlPath);
                 }
             }
 
-            //for (String variableThatHoldsElementInList : result) {
-            //arrayAdapterPlaceHolder.add(variableThatHoldsElementInList);
-
             else {
                 //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
+                Toast toast = new Toast(MyApplication.getAppContext());
+                toast.makeText(MyApplication.getAppContext(), "No new data from server", Toast.LENGTH_SHORT);
+                toast.show();
             }
+
         }
 
 
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
         //TESTING: PASSED TEST
         //should return an arraylist to whomever called it so they can use that arraylist
-        public List getDataFromJson(String text) throws Exception {
+        public ArrayList getDataFromJson(String text) throws Exception {
 
             final String badJson = "check JSON object or JSON array";
 
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     String value = jsonArrayJSONObject.getString("poster_path");
                     Log.d("toString check", "doInBackground: " + value);
                     //put each String equivalent into arraylist
-                    posterArray.add(value);
+                    posterArray.add(new String(value));
                     Log.d("arrayList check", "doInBackground: " + posterArray.get(i));
                 }
             } catch (JSONException jse) {

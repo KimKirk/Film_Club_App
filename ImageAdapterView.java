@@ -1,22 +1,31 @@
 package com.spellflight.android.popularmovies;
 
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 /**
  * Created by Kim Kirk on 11/10/2016.
  */
-public class ImageAdapterView extends BaseAdapter {
+public class ImageAdapterView extends ArrayAdapter {
     //TODO: figure out why need to override getItemId() method
+
+
+    public ImageAdapterView(Context context, int resource, List<String> objects) {
+        super(context, resource, objects);
+    }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
 
         //handling if there is no view object to put data into
         if (convertView == null) {
@@ -24,9 +33,11 @@ public class ImageAdapterView extends BaseAdapter {
         }
 
 
+
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
-        String imageURL = //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
+        String imageURL = getItem(position);
+                //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
                 //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
 
         //picasso will take each array data element and stick it into the view

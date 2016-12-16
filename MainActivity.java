@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //get poster path arraylist to use in ImageAdapterView class
-        public ArrayList getPosterPathArrayList () {
+        public ArrayList<String> getPosterPathArrayList () {
             return posterArray;
         }
 

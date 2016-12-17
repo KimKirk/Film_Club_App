@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // DONE: 12/2/2016 add name of array that holds data
-        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, posterPath.getPosterPathArrayList());
+        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, posterPath.posterArray);
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public class FetchMovies extends AsyncTask<String, Void, ArrayList<String>> {
 
         private String lineOfText = null;
-        private ArrayList posterArray = new ArrayList<String>();
+        private ArrayList<String> posterArray = new ArrayList<String>();
         String dataFromServer;
         ArrayList<String> dataFromJson;
 
@@ -165,16 +165,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
-
-
-
-        //get poster path arraylist to use in ImageAdapterView class
-        public ArrayList<String> getPosterPathArrayList () {
-            return posterArray;
-        }
-
-
 
 
         //gets data from json object

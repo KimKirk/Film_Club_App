@@ -26,26 +26,27 @@ public class ImageAdapterView extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        ImageView view = (ImageView) convertView;
 
         //handling if there is no view object to put data into
         if (convertView == null) {
             convertView = View.inflate(MyApplication.getAppContext(), R.layout.activity_main, parent);
         }
 
-
-
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
-        String imageURL = getItem(position);
+        Object imageObject = getItem(position);
+        String imageURL = imageObject.toString();
                 //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
                 //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
 
         //picasso will take each array data element and stick it into the view
         //should load() have the current position in the array as its input (so get position in array and return the value there) then add the base URL to that result?
         //make sure you are getting the arraylist that you sent into the adapter, don't create a new instance of the fetchmovies class or will get totally new arraylist in wrong position
-        (ImageView) convertView = Picasso.with(MyApplication.getAppContext()).load(imageURL).into(convertView);
+        Picasso.with(MyApplication.getAppContext()).load("https://image.tmdb.org/t/p/w500" + imageURL).into(view);
 
-        return convertView;
+        return view;
+
     }
 
     //DONE: add Picasso library to gradle

@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -26,13 +25,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
     private String dummyValue = "top_rated";
-    private ArrayAdapter<String> arrayAdapter;
+    private ImageAdapterView arrayAdapter;
 
 
     @Override
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // DONE: 12/2/2016 add name of array that holds data
-        arrayAdapter = new ArrayAdapter<String>(MyApplication.getAppContext(), R.layout.activity_main, posterPath.getPosterPathArrayList());
+        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, posterPath.getPosterPathArrayList());
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         //// DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
         //should return result that onPostExecute() will need as input param
         protected ArrayList<String> doInBackground(String...params) {
+
             String badMethodCall = "bad method call(s)";
             try {
                 dataFromServer = getDataFromServer();
@@ -139,21 +140,22 @@ public class MainActivity extends AppCompatActivity {
         // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
         @Override
         protected void onPostExecute(ArrayList<String> result) {
-            //TODO: CHECK THAT THIS DOES NOT CLEAR THE LIST OF DATA
+            //DONE: CHECK THAT THIS DOES NOT CLEAR THE LIST OF DATA
             if (result != null) {
                 //not first time received result List of items which means arrayadapter has stuff in it already
                 //clear out what is already in arrayadapter so can add new stuff no dups
                 arrayAdapter.clear();
                 //go through each element in the arraylist and add each element to the arrayadapter
                 //create an iterator for the result List
-                //ListIterator resultIterator = result.listIterator();
-                //resultIterator.hasNext()
-                for(String urlPath : result) {
+                Log.d("check if result null", "onPostExecute: " + result.isEmpty());
+                ListIterator resultIterator = result.listIterator();
+                while(resultIterator.hasNext())
+                //for(String urlPath : result) {
+
                     //get the element in the current position
                     //add the element to the arrayAdapter
-                    arrayAdapter.add(urlPath);
+                    arrayAdapter.add(resultIterator.next());
                 }
-            }
 
             else {
                 //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
         //TESTING: PASSED TEST
         //should return an arraylist to whomever called it so they can use that arraylist
-        public ArrayList getDataFromJson(String text) throws Exception {
+        public ArrayList<String> getDataFromJson(String text) throws Exception {
 
             final String badJson = "check JSON object or JSON array";
 
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     String value = jsonArrayJSONObject.getString("poster_path");
                     Log.d("toString check", "doInBackground: " + value);
                     //put each String equivalent into arraylist
-                    posterArray.add(new String(value));
+                    posterArray.add(value);
                     Log.d("arrayList check", "doInBackground: " + posterArray.get(i));
                 }
             } catch (JSONException jse) {
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 // FIXME: 12/2/2016 here is the final url that shows the data you will get from server https://api.themoviedb.org/3/movie/popular?&api_key=821d4fff9880f197021eaccba83fb04f&language=en-US
 
                 builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                        .appendQueryParameter(API_KEY_PARAM, "").appendQueryParameter(LANGUAGE_PARAM, "en-US")
+                        .appendQueryParameter(API_KEY_PARAM, "821d4fff9880f197021eaccba83fb04f").appendQueryParameter(LANGUAGE_PARAM, "en-US")
                         .build();
                 url = new URL(builtUri.toString());
             }

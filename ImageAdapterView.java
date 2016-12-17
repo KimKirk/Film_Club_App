@@ -26,12 +26,13 @@ public class ImageAdapterView extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ImageView view = (ImageView) convertView;
 
         //handling if there is no view object to put data into
         if (convertView == null) {
             convertView = View.inflate(MyApplication.getAppContext(), R.layout.activity_main, parent);
         }
+
+        ImageView view = (ImageView) convertView;
 
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 

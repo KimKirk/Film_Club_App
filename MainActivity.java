@@ -41,16 +41,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TESTING: NOT TESTED
+        //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
         arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfStrings);
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
-
         startTask(dummyValue);
-
-
     }
 
 
@@ -65,11 +62,10 @@ public class MainActivity extends AppCompatActivity {
             // TODO: 12/2/2016 remove line below
             Log.d("Network is up", "startTask: ");
         } else {
-            Toast toast = new Toast(MyApplication.getAppContext());
-            toast.makeText(MyApplication.getAppContext(),R.string.network_check,Toast.LENGTH_SHORT);
+            Toast toast = new Toast(getApplicationContext());
+            toast.makeText(getApplicationContext(),R.string.network_check,Toast.LENGTH_SHORT);
             toast.show();
         }
-
     }
 
     //TODO: 11/18/2016 ADD CODE THAT SAYS This product uses the TMDb API but is not endorsed or certified by TMDb. with their logo see this page https://www.themoviedb.org/about/logos-attribution
@@ -85,31 +81,6 @@ public class MainActivity extends AppCompatActivity {
         String dataFromServer;
         ArrayList<String> dataFromJson;
 
-
-
-        /* 1. extend AsyncTask
-            2. you will have to override at least one method from the class
-                doInBackground()
-                most likely you will also override onPostExecute()
-            3. the parameters to the AsyncTask class include
-                params = data type of parameters sent to the task upon execution of the task
-                    this is the data type to send into the task and is associated with the doInBackground() method
-                progress = the data type of progress units published during the background computation
-                    this is needed only if you use onProgressUpdate() method inside of the AsyncTask
-                Result = data type of result done for this task
-                    this is usually the data type of the return type from the onPostExecute() method
-            4. the methods in the AsyncTask class that can be overriden
-                onPreExecute() called in the UI thread before task executes (before you use the execute() method on the task), used to setup the task (like show progress bar in UI)
-                doInBackground(params) called on background thread/inside of AsyncTask after onPreExecute finishes executing, used to peform the background task, params listed in AsyncTask class signature are passed into this method, result of this step are returned by this method and passed back to onPostExecute() method, THIS IS WHERE YOU PUT ALL OF THE CODE TO DO WHATEVER THE TASK IS THAT NEEDS TO BE done WHICH MEANS THIS METHOD CAN BE HUGE AND IT'S OKAY
-                onProgressUpdate(progress) called in UI thread after publishProgress(progress) , used to display any form of progress in UI while background task is executing (like progress bar, etc)
-                onPostExecute(result) called in UI thread after background task finishes, result of doInBackground() is passed to this step as a parameter
-            5. ground rules for use:
-                do not call any of the 4 methods to be overriden manually; just override them and put what you want in the method body, AndroidOS will call them itself as needed in Activity lifecycle
-                task can be executed only once (exception will be thrown if second execution is attempted)
-
-            6. create task instance on UI thread
-            7. call execute(params) on the task instance
-                this starts the background thread */
 
         // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
         // TODO: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
@@ -158,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             else {
-                //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
-                Toast toast = new Toast(MyApplication.getAppContext());
-                toast.makeText(MyApplication.getAppContext(), "No new data from server", Toast.LENGTH_SHORT);
+                // TODO: 12/18/2016  add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
+                Toast toast = new Toast(getApplicationContext());
+                toast.makeText(getApplicationContext(), "No new data from server", Toast.LENGTH_SHORT);
                 toast.show();
             }
 
@@ -200,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
             //DONE: 3rd - 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
             //DONE: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
             // DONE: 2nd - 11/10/2016 create array that holds image data from moviedb server, hold in a variable, replace imageArray above with variable name
-            // DESIGN: 12/2/2016 add conditional statement so that you can choose which data to pull from the array so that you can make this method public and use the results in ImageAdapterView class
         }
 
 

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Kim Kirk on 11/10/2016.
@@ -18,7 +18,7 @@ public class ImageAdapterView extends ArrayAdapter {
     //TODO: figure out why need to override getItemId() method
 
 
-    public ImageAdapterView(Context context, int resource, List<String> objects) {
+    public ImageAdapterView(Context context, int resource, ArrayList<String> objects) {
         super(context, resource, objects);
     }
 
@@ -29,7 +29,7 @@ public class ImageAdapterView extends ArrayAdapter {
 
         //handling if there is no view object to put data into
         if (convertView == null) {
-            convertView = View.inflate(MyApplication.getAppContext(), R.layout.activity_main, parent);
+            convertView = View.inflate(getContext(), R.layout.activity_main, null);
         }
 
         ImageView view = (ImageView) convertView;

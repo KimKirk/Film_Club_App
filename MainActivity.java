@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private FetchMovies posterPath = new FetchMovies();
     private String dummyValue = "top_rated";
     private ImageAdapterView arrayAdapter;
+    private ArrayList<String> arrayOfStrings = new ArrayList<String>();
 
 
     @Override
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: NOT TESTED
         // DONE: 12/2/2016 add name of array that holds data
-        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, posterPath.posterArray);
+        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfStrings);
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
@@ -147,15 +148,14 @@ public class MainActivity extends AppCompatActivity {
                 arrayAdapter.clear();
                 //go through each element in the arraylist and add each element to the arrayadapter
                 //create an iterator for the result List
-                Log.d("check if result null", "onPostExecute: " + result.isEmpty());
                 ListIterator resultIterator = result.listIterator();
-                while(resultIterator.hasNext())
-                //for(String urlPath : result) {
-
+                while (resultIterator.hasNext()) {
+                    //for(String urlPath : result) {
                     //get the element in the current position
                     //add the element to the arrayAdapter
                     arrayAdapter.add(resultIterator.next());
                 }
+            }
 
             else {
                 //add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec

@@ -40,13 +40,16 @@ public class ImageAdapterView extends ArrayAdapter {
 
         Object imageObject = getItem(position);
         String imageURL = imageObject.toString();
+
+        String baseURL = "https://image.tmdb.org/t/p/w500";
                 //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
                 //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
+
 
         //picasso will take each array data element and stick it into the view
         //should load() have the current position in the array as its input (so get position in array and return the value there) then add the base URL to that result?
         //make sure you are getting the arraylist that you sent into the adapter, don't create a new instance of the fetchmovies class or will get totally new arraylist in wrong position
-        Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w500" + imageURL).into(imageView);
+        Picasso.with(getContext()).load(baseURL + imageURL).into(imageView);
 
         return imageView;
 

@@ -26,13 +26,15 @@ public class ImageAdapterView extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        ImageView imageView;
 
         //handling if there is no view object to put data into
         if (convertView == null) {
-            convertView = View.inflate(getContext(), R.layout.activity_main, null);
+            imageView = new ImageView(getContext());
         }
-
-        ImageView view = (ImageView) convertView;
+        else {
+            imageView = (ImageView) convertView;
+        }
 
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
@@ -44,9 +46,9 @@ public class ImageAdapterView extends ArrayAdapter {
         //picasso will take each array data element and stick it into the view
         //should load() have the current position in the array as its input (so get position in array and return the value there) then add the base URL to that result?
         //make sure you are getting the arraylist that you sent into the adapter, don't create a new instance of the fetchmovies class or will get totally new arraylist in wrong position
-        Picasso.with(MyApplication.getAppContext()).load("https://image.tmdb.org/t/p/w500" + imageURL).into(view);
+        Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w500" + imageURL).into(imageView);
 
-        return view;
+        return imageView;
 
     }
 

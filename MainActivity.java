@@ -59,11 +59,10 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
             posterPath.execute(userPreference);
-            // TODO: 12/2/2016 remove line below
-            Log.d("Network is up", "startTask: ");
+            // DONE: 12/2/2016 remove line below
         } else {
-            Toast toast = new Toast(getApplicationContext());
-            toast.makeText(getApplicationContext(),R.string.network_check,Toast.LENGTH_SHORT);
+            Toast toast = new Toast(MainActivity.this);
+            toast.makeText(MainActivity.this,R.string.network_check,Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -85,10 +84,14 @@ public class MainActivity extends AppCompatActivity {
         // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
         // TODO: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
 
+        @Override
+        protected void onPreExecute(){
+
+        }
 
         @Override
         //DONE: check if parameter type is accurate and return type is accurate
-        //// DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
+        //DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
         //should return result that onPostExecute() will need as input param
         protected ArrayList<String> doInBackground(String...params) {
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         private ArrayList<String> posterArray = new ArrayList<String>();
         String dataFromServer;
         ArrayList<String> dataFromJson;
+        ProgressBar progressBar;
 
 
         // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute(){
+            //show progress bar in UI
+            progressBar= (ProgressBar) findViewById(R.id.progress_bar);
+            progressBar.setIndeterminate(true);
+            progressBar.setVisibility(ProgressBar.VISIBLE);
 
         }
 
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 toast.makeText(getApplicationContext(), "No new data from server", Toast.LENGTH_SHORT);
                 toast.show();
             }
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
 
         }
 

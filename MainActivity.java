@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //add Fragment that shows Settings Menu
+        //// FIXME: 1/5/2017 this is not working, need to figure out how to add the fragment
+        getFragmentManager().beginTransaction().add(android.R.id.content, new SettingsFragment()).commit();
+
         //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
         arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfStrings);
@@ -62,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
             posterPath.execute(userPreference);
             // DONE: 12/2/2016 remove line below
         } else {
-            Toast toast = new Toast(MainActivity.this);
-            toast.makeText(MainActivity.this,R.string.network_check,Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(MainActivity.this,R.string.network_check,Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -139,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
             else {
                 // TODO: 12/18/2016  add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
-                Toast toast = new Toast(getApplicationContext());
-                toast.makeText(getApplicationContext(), "No new data from server", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "No new data from server", Toast.LENGTH_SHORT);
                 toast.show();
             }
             progressBar.setVisibility(ProgressBar.INVISIBLE);

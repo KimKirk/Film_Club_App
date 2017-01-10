@@ -1,6 +1,7 @@
 package com.spellflight.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -8,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -42,17 +45,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //add Fragment that shows Settings Menu
-        //// FIXME: 1/5/2017 this is not working, need to figure out how to add the fragment
-        getFragmentManager().beginTransaction().add(android.R.id.content, new SettingsFragment()).commit();
-
-        //TESTING: PASSED
+         //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
         arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfStrings);
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
         startTask(dummyValue);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        //this creates the Menu bar option but does not provide settings fragment items as needed
+        switch (item.getItemId()){
+            case R.id.menu_item:
+                Intent intent = new Intent(getApplicationContext(), SettingsHostActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

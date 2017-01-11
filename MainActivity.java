@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
-    private String dummyValue = "top_rated";
+    private String dummyValue = "popular";
     private ImageAdapterView arrayAdapter;
     private ArrayList<String> arrayOfStrings = new ArrayList<String>();
 

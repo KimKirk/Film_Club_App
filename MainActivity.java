@@ -2,6 +2,7 @@ package com.spellflight.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -33,25 +34,43 @@ import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
+    //// TODO: 1/11/2017 check that these variable names fit with Android syntax convention (when to put mVariableName)
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
-    private String dummyValue = "popular";
+    private String userSortDefault = "popular";
     private ImageAdapterView arrayAdapter;
     private ArrayList<String> arrayOfStrings = new ArrayList<String>();
+    private SharedPreferences mPrefs;
+    private String userSortSelection = " ";
+    private String prefKey = "user preference";
+    private String changeOut = "popular";
 
+
+    //TESTING: PASSED
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-         //TESTING: PASSED
+        if(savedInstanceState != null) {
+            //making sure the newly created mainactivity has the preference value the user last chose
+            //get sharedpreference
+            mPrefs = getPreferences(MODE_PRIVATE);
+            //get data from Bundle which will be the value of the preference the user chose
+            //edit the sharedpreference object so that it finds the listpreference and adds the preference value the user chose
+            SharedPreferences.Editor editor = mPrefs.edit();
+            editor.putString("movie sort", (String) savedInstanceState.getCharSequence(prefKey));
+        }
+
+
+        //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
         arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfStrings);
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
-        startTask(dummyValue);
+        startTask(userSortDefault);
     }
 
     @Override
@@ -62,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-
         //this creates the Menu bar option but does not provide settings fragment items as needed
         switch (item.getItemId()){
             case R.id.menu_item:
@@ -74,6 +92,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //// DONE: 1/12/2017 task can only be executed once
+    //no information is listed in documentation for Asynctask as to whether or not the thread is killed when the task has completed. I researched this subject through Google and found developers who claim it does thus felt it safe to create a new thread and start a new task.
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        FetchMovies newFetchMoviesTask = new FetchMovies();
+        //String prefInput = getUserPreferenceSelection();
+        //assign input to variable
+        //changeOut = prefInput;
+        changeOut = "top_rated";
+        newFetchMoviesTask.execute(changeOut);
+    }
+
+    //making sure to save the value of the preference the user last chose
+    @Override
+    public void onSaveInstanceState (Bundle outState){
+        super.onSaveInstanceState(outState);
+        //get user preference value
+        String prefToSave = getUserPreferenceSelection();
+        //save preference data to Bundle
+        outState.putCharSequence(prefKey, prefToSave);
+
+    }
+
+    private String getUserPreferenceSelection () {
+        mPrefs = getPreferences(MODE_PRIVATE);
+        userSortSelection = mPrefs.getString("movie sort", "popular");
+          return userSortSelection;
+    }
 
 
     //TESTING: PASSED
@@ -106,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
-        // TODO: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
+        // DONE: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
 
         @Override
         protected void onPreExecute(){
@@ -125,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
             String badMethodCall = "bad method call(s)";
             try {
-                dataFromServer = getDataFromServer();
+                dataFromServer = getDataFromServer(params[0]);
                 dataFromJson = getDataFromJson(dataFromServer);
                 if (dataFromJson.isEmpty()) {
                     return null;
@@ -160,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             else {
-                // TODO: 12/18/2016  add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
-                Toast toast = Toast.makeText(getApplicationContext(), "No new data from server", Toast.LENGTH_SHORT);
+                // DONE: 12/18/2016  add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
+                Toast toast = Toast.makeText(getApplicationContext(), "No new data from server. Try again in 10 sec.", Toast.LENGTH_SHORT);
                 toast.show();
             }
             progressBar.setVisibility(ProgressBar.INVISIBLE);
@@ -211,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
         //fetches data from the server
         //TESTING: PASSED TEST
-        protected String getDataFromServer() throws Exception {
+        protected String getDataFromServer(String prefOption) throws Exception {
 
             final String badUrl = "check URL";
             final String badProtocolRequest = "check setRequestMethod()";
@@ -219,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
             final String badConnectionObject = "check HttpURLConnection";
             final String badIoException = "check connect() or readline()";
             //create URL object
-            final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/popular?";
+            final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/"+prefOption+"?";
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
             URL url = null;

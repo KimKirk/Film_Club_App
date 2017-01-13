@@ -9,15 +9,15 @@ import android.preference.PreferenceManager;
  */
 public class SettingsHostActivity extends Activity {
 
+    //TESTING: PASSED
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
         PreferenceManager.setDefaultValues(this, R.xml.preferences,false);
 
-        //add Fragment that shows Settings Menu
+        //add Fragment to SettingHostActivity that shows Settings Menu
         //// DONE: 1/5/2017 this is not working, need to figure out how to add the fragment
-        //this adds the fragment to the SettingsHostActivity and the movie sort works well here
         getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commit();
 
     }

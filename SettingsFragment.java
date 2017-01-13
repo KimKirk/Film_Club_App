@@ -37,12 +37,12 @@ public class SettingsFragment extends PreferenceFragment {
                  public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
                      //check which Preference was changed by getting the key and if it matches
                      //figure out which value was chosen
-                     Preference preference = findPreference(key);
-                     //SKIP THIS FOR NOW//set the value chosen into the SharedPreferences object
-                     //use setEntryValues(CharSequence[]) where CharSequence[] is the name of the array that holds the values for the Preference (see arrays.xml resource)
+                     //key tells me which SharedPreference changed, value = value it was changed to
+                     Preference preference = getPreferenceManager().findPreference(key);
                      if (key.equals(R.string.list_preference_key)) {
                          //UPDATE SUMMARY TO SHARED PREFERENCES VALUE
                          preference.setSummary(((ListPreference) preference).getEntry());
+
                      }
                  }
              };

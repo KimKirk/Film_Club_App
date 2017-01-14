@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -98,10 +99,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart(){
         super.onRestart();
         FetchMovies newFetchMoviesTask = new FetchMovies();
-        //String prefInput = getUserPreferenceSelection();
         //assign input to variable
-        //changeOut = prefInput;
-        changeOut = "top_rated";
+        changeOut = getUserPreferenceSelection();
         newFetchMoviesTask.execute(changeOut);
     }
 
@@ -117,8 +116,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getUserPreferenceSelection () {
-        mPrefs = getPreferences(MODE_PRIVATE);
-        userSortSelection = mPrefs.getString("movie sort", "popular");
+        //mPrefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //SharedPreferences SharedPreferences = getSharedPreferences("movie sort",MODE_PRIVATE);
+
+        userSortSelection = defaultSharedPreferences.getString("movie sort", "");
+                //mPrefs.getString("movie sort","");
           return userSortSelection;
     }
 

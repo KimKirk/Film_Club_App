@@ -2,7 +2,6 @@ package com.spellflight.android.popularmovies;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
@@ -33,21 +32,24 @@ public class SettingsFragment extends PreferenceFragment {
         //registerOnSharedPreferenceChangeListener here
             //your listener is stored in mListener variable
          if(mListener == null) {
-             new SharedPreferences.OnSharedPreferenceChangeListener() {
+             mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                  public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
+                     String whatIsKey = key;
                      //check which Preference was changed by getting the key and if it matches
                      //figure out which value was chosen
                      //key tells me which SharedPreference changed, value = value it was changed to
                      Preference preference = getPreferenceManager().findPreference(key);
-                     if (key.equals(R.string.list_preference_key)) {
+                     if (key.equals("movie sort")) {
                          //UPDATE SUMMARY TO SHARED PREFERENCES VALUE
-                         preference.setSummary(((ListPreference) preference).getEntry());
+                         //get preference object
+                         //set summary on preference object to key from sharedpreferences object
+                         preference.setSummary(preferences.getString(key,""));
 
                      }
                  }
              };
          }
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(mListener);
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(mListener);
     }
 
 
@@ -56,6 +58,6 @@ public class SettingsFragment extends PreferenceFragment {
         super.onPause();
         //unregisterOnSharedPreferenceChangeListener here
         //your listener is stored in mListener variable
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(mListener);
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(mListener);
     }
 }

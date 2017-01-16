@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
     //// TODO: 1/11/2017 check that these variable names fit with Android syntax convention (when to put mVariableName)
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
-    private String userSortDefault = "popular";
+    private String userSortDefault = "";
     private ImageAdapterView arrayAdapter;
     private ArrayList<String> arrayOfStrings = new ArrayList<String>();
-    private SharedPreferences mPrefs;
     private String userSortSelection = " ";
     private String prefKey = "user preference";
     private String changeOut = "popular";
+    private SharedPreferences defaultSharedPreferences;
 
 
     //TESTING: PASSED
@@ -53,15 +53,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userSortDefault = "popular";
 
+        //TESTING: DOES NOT PASS
+        //// FIXME: 1/13/2017 does not use user's current preference
         if(savedInstanceState != null) {
             //making sure the newly created mainactivity has the preference value the user last chose
-            //get sharedpreference
-            mPrefs = getPreferences(MODE_PRIVATE);
+            //retrieve default sharedpreferences
             //get data from Bundle which will be the value of the preference the user chose
             //edit the sharedpreference object so that it finds the listpreference and adds the preference value the user chose
-            SharedPreferences.Editor editor = mPrefs.edit();
+            defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
             editor.putString("movie sort", (String) savedInstanceState.getCharSequence(prefKey));
+
         }
 
 
@@ -71,15 +75,18 @@ public class MainActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.grid_view);
         gridView.setAdapter(arrayAdapter);
 
+
         startTask(userSortDefault);
     }
 
+    //TESTING: PASSED
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
+    //TESTING: PASSED
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         //this creates the Menu bar option but does not provide settings fragment items as needed
@@ -100,30 +107,36 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         FetchMovies newFetchMoviesTask = new FetchMovies();
         //assign input to variable
-        changeOut = getUserPreferenceSelection();
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //retrieve value from default sharedpreferences
+        changeOut = defaultSharedPreferences.getString("movie sort", "");
+                //getUserPreferenceSelection();
         newFetchMoviesTask.execute(changeOut);
     }
 
+    //TESTING: NOT PASSED
     //making sure to save the value of the preference the user last chose
     @Override
     public void onSaveInstanceState (Bundle outState){
-        super.onSaveInstanceState(outState);
         //get user preference value
-        String prefToSave = getUserPreferenceSelection();
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //retrieve value from default sharedpreferences
+        String prefToSave = defaultSharedPreferences.getString("movie sort", "");
+                //getUserPreferenceSelection();
         //save preference data to Bundle
         outState.putCharSequence(prefKey, prefToSave);
+        super.onSaveInstanceState(outState);
 
     }
 
-    private String getUserPreferenceSelection () {
-        //mPrefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //SharedPreferences SharedPreferences = getSharedPreferences("movie sort",MODE_PRIVATE);
-
+    //TESTING: PASSED
+    /*private String getUserPreferenceSelection () {
+        //retrieve default sharedpreferences
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //retrieve value from default sharedpreferences
         userSortSelection = defaultSharedPreferences.getString("movie sort", "");
-                //mPrefs.getString("movie sort","");
           return userSortSelection;
-    }
+    }*/
 
 
     //TESTING: PASSED

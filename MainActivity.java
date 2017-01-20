@@ -53,10 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        userSortDefault = "popular";
 
-
-        //TESTING: DOES NOT PASS
+        //TESTING: PASSED
         //// FIXME: 1/13/2017 does not use user's current preference
         if(savedInstanceState != null) {
             //making sure the newly created mainactivity has the preference value the user last chose
@@ -73,10 +71,11 @@ public class MainActivity extends AppCompatActivity {
             //set the default value for the sharedpreference file
             defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             editor = defaultSharedPreferences.edit();
-            editor.putString("movie sort", userSortDefault);
+            editor.putString("movie sort", "popular");
             editor.commit();
 
         }
+        userSortDefault = defaultSharedPreferences.getString("movie sort", "") ;
 
 
         //TESTING: PASSED
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //// DONE: 1/12/2017 task can only be executed once
+    //TESTING: PASSED
     //no information is listed in documentation for Asynctask as to whether or not the thread is killed when the task has completed. I researched this subject through Google and found developers who claim it does thus felt it safe to create a new thread and start a new task.
     @Override
     protected void onRestart(){
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         newFetchMoviesTask.execute(changeOut);
     }
 
-    //TESTING: NOT PASSED
+    //TESTING: PASSED
     //making sure to save the value of the preference the user last chose
     @Override
     public void onSaveInstanceState (Bundle outState){
@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         // DONE: 12/8/2016 see evernote All Tasks "next steps to get adapter working"
         // DONE: 12/8/2016 see evernote All Tasks "getting Settings Preference/Menu Option to show change from "popular" movies to "top rated" movies"
 
+        //TESTING: PASSED
         @Override
         protected void onPreExecute(){
             //show progress bar in UI
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //TESTING: PASSED
         @Override
         //DONE: check if parameter type is accurate and return type is accurate
         //DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
@@ -212,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        //TESTING: PASSED
             //this is called by AndroidOS
         // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
         @Override
@@ -244,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
 
         //gets data from json object
         // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
-        //TESTING: PASSED TEST
+        //TESTING: PASSED
         //should return an arraylist to whomever called it so they can use that arraylist
         public ArrayList<String> getDataFromJson(String text) throws Exception {
 
@@ -283,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
         //does the work normally inside of doInBackground but put the work into own method so is cleaner and easier to modify in future and won't affect doInBackground
         //fetches data from the server
-        //TESTING: PASSED TEST
+        //TESTING: PASSED
         protected String getDataFromServer(String prefOption) throws Exception {
 
             final String badUrl = "check URL";

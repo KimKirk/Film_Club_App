@@ -16,6 +16,7 @@ private Fragment fragment;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
+
         //check to see if preference already has default value set, if not run this;
 
         //add Fragment to SettingHostActivity that shows Settings Menu
@@ -32,6 +33,7 @@ private Fragment fragment;
     }
 
 
+    //TESTING: NOT TESTED
     //puts fragment instance into the bundle
     @Override
     protected void onSaveInstanceState(Bundle outState){

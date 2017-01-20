@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private String userSortDefault = "";
     private ImageAdapterView arrayAdapter;
     private ArrayList<String> arrayOfStrings = new ArrayList<String>();
-    private String userSortSelection = " ";
     private String prefKey = "user preference";
-    private String changeOut = "popular";
+    private String changeOut = "";
     private SharedPreferences defaultSharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
     //TESTING: PASSED
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         userSortDefault = "popular";
 
+
         //TESTING: DOES NOT PASS
         //// FIXME: 1/13/2017 does not use user's current preference
         if(savedInstanceState != null) {
@@ -63,8 +64,17 @@ public class MainActivity extends AppCompatActivity {
             //get data from Bundle which will be the value of the preference the user chose
             //edit the sharedpreference object so that it finds the listpreference and adds the preference value the user chose
             defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+             editor = defaultSharedPreferences.edit();
             editor.putString("movie sort", (String) savedInstanceState.getCharSequence(prefKey));
+            editor.commit();
+
+        }
+        else {
+            //set the default value for the sharedpreference file
+            defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            editor = defaultSharedPreferences.edit();
+            editor.putString("movie sort", userSortDefault);
+            editor.commit();
 
         }
 

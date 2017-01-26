@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentActivity;
  */
 public class SettingsHostActivity extends FragmentActivity {
 
-private Fragment fragment;
+    //holds fragment instance that is saved in onSavedInstanceState
+    private Fragment fragment;
+
 
     //TESTING: PASSED
     @Override
@@ -17,10 +19,9 @@ private Fragment fragment;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_activity);
 
-        //check to see if preference already has default value set, if not run this;
 
-        //add Fragment to SettingHostActivity that shows Settings Menu
         //// DONE: 1/5/2017 this is not working, need to figure out how to add the fragment
+        //add Fragment to SettingHostActivity that shows Settings Menu
         getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commit();
 
         //if bundle has data in it replace current fragment with previous fragment instance

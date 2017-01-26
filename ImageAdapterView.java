@@ -16,13 +16,22 @@ import java.util.ArrayList;
  */
 public class ImageAdapterView extends ArrayAdapter {
     //DONE: figure out why need to override getItemId() method
+    public String overView;
+    public String releaseDate;
+    public String originalTitle;
+    public Double voteAverage;
 
 
-    public ImageAdapterView(Context context, int resource, ArrayList<String> objects) {
+    //constructor to create new ImageAdapterView to be used to to create a new array adapter
+    public ImageAdapterView(Context context, int resource, ArrayList<MovieDetails> objects) {
+        //we only want to use the parent constructor, we create the constructor for the ImageAdapterView subclass so that we can create a new object of the subclass type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
         super(context, resource, objects);
+
+
     }
 
 
+    //called by AndroidOS only, the body of the method is where you take the paramters and use them to create the view that the arrayadapter sends into the layout and shows the view on screen
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -38,20 +47,26 @@ public class ImageAdapterView extends ArrayAdapter {
 
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
-        // TODO: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging 
-        Object imageObject = getItem(position);
-        String imageURL = imageObject.toString();
+        // TODO: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
+        //gets item in arrayadapter at the specified position
+        MovieDetails imageObject = (MovieDetails)getItem(position);
+        // TODO: 1/25/2017  go into object and retrieve just the "image" string
 
-        // TODO: 12/18/2016 figure out if you need to define this outside the method but inside the class 
+        //String imageURL = imageObject.;
+        //converts the item at that position into a string so it can be used for the URL of the image
+        String imageURL = imageObject.img.toString();
+
+        // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
+        //holds base URL to be added as prefix to string URL suffix from arrayadapter
         String baseURL = "https://image.tmdb.org/t/p/w500";
                 //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
-                //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
+                    //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
 
 
         //picasso will take each array data element and stick it into the view
         //should load() have the current position in the array as its input (so get position in array and return the value there) then add the base URL to that result?
         //make sure you are getting the arraylist that you sent into the adapter, don't create a new instance of the fetchmovies class or will get totally new arraylist in wrong position
-        Picasso.with(getContext()).load(baseURL + imageURL).into(imageView);
+        Picasso.with(getContext()).load(baseURL + "/" + imageURL).into(imageView);
 
         return imageView;
 

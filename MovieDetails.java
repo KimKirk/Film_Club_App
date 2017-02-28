@@ -8,7 +8,7 @@ public class MovieDetails {
     public String overVw;
     public String releaseDt;
     public String orgTitle;
-    public Double voteAvg;
+    public String voteAvg;
 
 
     public MovieDetails (String image, String overview, String releaseDate, String originalTitle, Double voteAverage){
@@ -16,7 +16,7 @@ public class MovieDetails {
         this.overVw= overview;
         this.releaseDt = releaseDate;
         this.orgTitle = originalTitle;
-        this.voteAvg = voteAverage;
+        this.voteAvg = voteAverage.toString();
 
     }
 }

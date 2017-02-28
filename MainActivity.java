@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -39,14 +41,15 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private FetchMovies posterPath = new FetchMovies();
     private String userSortDefault = "";
-    private ImageAdapterView arrayAdapter;
+    private MovieImageAdapter arrayAdapter;
     private ArrayList<MovieDetails> arrayOfMovieDetailsObjects = new ArrayList<MovieDetails>();
     private String prefKey = "user preference";
     private String changeOut = "";
     private SharedPreferences defaultSharedPreferences;
     private SharedPreferences.Editor editor;
+    private Bundle bundle;
 
-
+// TODO: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class 
     //TESTING: PASSED
 
     //called by AndroidOS when activity first starts after install app and when activity created after being destroyed
@@ -92,31 +95,38 @@ public class MainActivity extends AppCompatActivity {
 
         //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
-        //holds arrayadapter that is created using the ImageAdapterView class constructor
-        arrayAdapter = new ImageAdapterView(this, R.layout.activity_main, arrayOfMovieDetailsObjects);
+        //holds arrayadapter that is created using the MovieImageAdapter class constructor
+        arrayAdapter = new MovieImageAdapter(this, R.layout.activity_main, arrayOfMovieDetailsObjects);
         //holds the layout for this activity
         gridView = (GridView) findViewById(R.id.grid_view);
         //sets the arrayadapter on the layout for the activity so they are bound together
         gridView.setAdapter(arrayAdapter);
         //add listener to gridview that listens for user to click on image
-        /*gridView.setOnClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //create anonymous class that holds the listener and overrides the onItemClick method as required, then applies listener to the gridview
             @Override
-            public void onItemClick(AdapterView<GridView> parent, View view, int position, long id){
-                //get the item from the position in the arrayadapter
-                arrayAdapter.
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                //takes in the gridview along with position it has in the arrayadapter
+
+                //get the extra data to be put into the Bundle
+                //get position in adapter
+                //get object in the adapter at the position
+                MovieDetails data = (MovieDetails) arrayAdapter.getItem(position);
 
                 //create a new Intent
+                // DONE: 2/1/2017 get the name of the detail Fragment class and complete this method
+                Intent intent = new Intent(getApplicationContext(), DetailHostActivity.class);
+
+                // DONE: 2/23/2017 figure out what the error message means for below line of code
 
                 //add extra data to the Intent
+                // DONE: 2/1/2017 get name of Parcelable class and complete this method
+                intent.putExtra("movieDetails",new MovieDetailsParcel(data.voteAvg,data.orgTitle,data.releaseDt,data.overVw) );
 
                 //Intent opens a new fragment and passes the extra data from the arrayadapter to the fragment
+                startActivity(intent);
             }
-
-
-
-        });*/
-
+        });
 
         //starts the task for Asynctask so that a new thread and new task can begin and do work in background of getting the URL data
         //sends in string to pass to doInBackground to be used to create URL to get data from server

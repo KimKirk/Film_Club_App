@@ -14,17 +14,15 @@ import java.util.ArrayList;
 /**
  * Created by Kim Kirk on 11/10/2016.
  */
-public class ImageAdapterView extends ArrayAdapter {
+public class MovieImageAdapter extends ArrayAdapter {
     //DONE: figure out why need to override getItemId() method
-    public String overView;
-    public String releaseDate;
-    public String originalTitle;
-    public Double voteAverage;
+
+    private String imageURL;
 
 
-    //constructor to create new ImageAdapterView to be used to to create a new array adapter
-    public ImageAdapterView(Context context, int resource, ArrayList<MovieDetails> objects) {
-        //we only want to use the parent constructor, we create the constructor for the ImageAdapterView subclass so that we can create a new object of the subclass type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
+    //constructor to create new MovieImageAdapter to be used to to create a new array adapter
+    public MovieImageAdapter(Context context, int resource, ArrayList<MovieDetails> objects) {
+        //we only want to use the parent constructor, we create the constructor for the MovieImageAdapter subclass so that we can create a new object of the subclass type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
         super(context, resource, objects);
 
 
@@ -47,14 +45,12 @@ public class ImageAdapterView extends ArrayAdapter {
 
         //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
-        // TODO: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
+        // DONE: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
         //gets item in arrayadapter at the specified position
         MovieDetails imageObject = (MovieDetails)getItem(position);
-        // TODO: 1/25/2017  go into object and retrieve just the "image" string
+        // DONE: 1/25/2017  go into object and retrieve just the "image" string
 
-        //String imageURL = imageObject.;
-        //converts the item at that position into a string so it can be used for the URL of the image
-        String imageURL = imageObject.img.toString();
+        imageURL = imageObject.img;
 
         // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
         //holds base URL to be added as prefix to string URL suffix from arrayadapter

@@ -17,7 +17,7 @@ public class SettingsHostActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detail_activity);
+        setContentView(R.layout.fragment_container);
 
 
         //// DONE: 1/5/2017 this is not working, need to figure out how to add the fragment

@@ -1,6 +1,7 @@
 package com.spellflight.android.popularmovies;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,29 +12,32 @@ import android.view.ViewGroup;
  */
 public class DetailFragment extends Fragment{
 
+    // TODO: 3/1/2017 test this method to make sure it works correctly 
     //this is a way to set the Fragment's fields so that you don't use the default constructor and then have to call setters
-   /* public static DetailFragment newInstance(int index){
+    public static DetailFragment newInstance(Parcelable movDetParcel){
         //create new instance of detail fragment
         DetailFragment detailFrag = new DetailFragment();
         //create new instance of a Bundle that holds data
         Bundle arguments = new Bundle();
         //put index value received into the Bundle and give it a key
-        arguments.putInt("index", index);
+        arguments.putParcelable("movieDetailsParcel",movDetParcel);
         //set arguments/field for the Detail Fragment
         detailFrag.setArguments(arguments);
         //return the new instance with the set field to the caller
         return detailFrag;
-    }*/
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        // TODO: 2/14/2017  get the data from the new instance of Detail Fragment
-        // TODO: 2/14/2017  set the data on the views that will show the data
+        // DONE: 2/14/2017  get the data from the new instance of Detail Fragment
+        // DONE: 2/14/2017  set the data on the views that will show the data
 
         //this goes into the fragment, gets the arguments you set for the fragment, and gets the value at index 0
-        getArguments().getParcelable("movieDetails");
+        MovieDetailsParcel movieDetailsParcel = getArguments().getParcelable("movieDetails");
         //get field values from inside parcelable object using getters from the Parcelable class you created
+
+
 
     }
 

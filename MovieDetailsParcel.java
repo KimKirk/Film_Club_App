@@ -25,6 +25,7 @@ public class MovieDetailsParcel implements Parcelable {
         this.overview = ovrvw;
     }
 
+    //create getters so that after you get the parcel object you can also get the data values stored inside of it
     public String getVote(){
         return vote;
     }

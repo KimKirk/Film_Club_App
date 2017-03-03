@@ -75,7 +75,6 @@ public class SettingsFragment extends PreferenceFragment {
                          //get preference object
                          //set summary on preference object to key from sharedpreferences object
                          preference.setSummary(preferences.getString(key,""));
-
                      }
                  }
              };

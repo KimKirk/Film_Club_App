@@ -35,7 +35,8 @@ public class SettingsHostActivity extends FragmentActivity {
 
 
     //TESTING: NOT TESTED
-    //puts fragment instance into the bundle
+    //puts fragment instance into the bundle, saves the fragment instance so that when it needs to be recreated host activity can retrieve saved fragment instance
+    //// TODO: 3/2/2017 decide if you need this code or not; do you need to save fragment instance to be used again when activity needs to attach previous fragment instance again?
     @Override
     protected void onSaveInstanceState(Bundle outState){
         getSupportFragmentManager().putFragment(outState,"fragment",fragment);

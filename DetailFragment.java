@@ -13,7 +13,8 @@ import android.widget.TextView;
  */
 public class DetailFragment extends Fragment{
 
-    // TODO: 3/1/2017 test this method to make sure it works correctly 
+    // DONE: 3/1/2017 test this method to make sure it works correctly
+    // FIXME: 3/6/2017 this method does not work when you save the fragment instance inside host activity
     //this is a way to set the Fragment's fields so that you don't use the default constructor and then have to call setters
     public static DetailFragment newInstance(Parcelable movDetParcel){
         //create new instance of detail fragment
@@ -24,6 +25,7 @@ public class DetailFragment extends Fragment{
         arguments.putParcelable("movieDetailsParcel",movDetParcel);
         //set arguments/field for the Detail Fragment
         detailFrag.setArguments(arguments);
+        //outer bundle = arguments, bundle, parcelable
         //return the new instance with the set field to the caller
         return detailFrag;
     }
@@ -34,9 +36,15 @@ public class DetailFragment extends Fragment{
 
     }
 
+    //DESIGN: possibly override and implement onActivityCreated() where you will set the text for the Fragment's View using the data you received from Intent; do this in this method because need to make sure the View has been initialized for the Fragment before adding text to it
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        //restore data for fragment's text views here because when activity is created it means can access the data the activity shares with fragment
+        /*if(savedInstanceState != null){
+            //get data from Bundle
+            //set text for text views
+        }*/
         // DONE: 2/14/2017  get the data from the new instance of Detail Fragment
         // DONE: 2/14/2017  set the data on the views that will show the data
         TextView titleView = (TextView)getActivity().findViewById(R.id.original_title);
@@ -52,12 +60,7 @@ public class DetailFragment extends Fragment{
         releaseDateView.setText(movieDetailsParcel.getRelease());
         voteView.setText(movieDetailsParcel.getVote());
 
-
-
     }
-
-    //DESIGN: possibly override and implement onActivityCreated() where you will set the text for the Fragment's View using the data you received from Intent; do this in this method because need to make sure the View has been initialized for the Fragment before adding text to it
-
 
 
     @Override
@@ -66,17 +69,11 @@ public class DetailFragment extends Fragment{
         return inflater.inflate(R.layout.detail_fragment,container, false);
     }
 
-    @Override
-    public void onPause(){
-        //when Fragment is paused and it might be stopped, save the Views and any data you wish to use to recreate the Fragment instance here by sticking the data inside a Bundle
-            //onPause will call onSavedInstanceState() so override this and save your stuff there
-
-        super.onPause();
-    }
-
+    //saves the data from the fragment's textviews
     /*@Override
     public void onSavedInstanceState(Bundle outState){
         //need to save text of TextViews
+
 
         //call super to save default View values too
         super.onSaveInstanceState(outState);

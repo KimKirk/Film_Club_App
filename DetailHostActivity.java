@@ -3,7 +3,6 @@ package com.spellflight.android.popularmovies;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 
 /**
@@ -25,7 +24,7 @@ public class DetailHostActivity extends FragmentActivity {
             //recreates fragment instance
             fragment = (DetailFragment)getSupportFragmentManager().getFragment(savedInstanceState,"fragment");
             //use newInstance() to recreate the new fragment with the correct data in it
-            // TODO: 3/7/2017 figure out why this did not work correctly? fragment saved already had argument with data, so no need to create again in newInstance() 
+            // DONE: 3/7/2017 fragment saved already had argument with data, so no need to create again in newInstance()
             //DetailFragment newDetailFragmentInstance = fragment.newInstance(getIntent().getExtras());
             //replaces any current fragment with new fragment instance
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,fragment).commit();
@@ -41,12 +40,12 @@ public class DetailHostActivity extends FragmentActivity {
 
     // DONE: 2/3/2017  save the instance of the Movie Details Fragment so that when the user changes orientation of the screen will get same fragment instance as before to make it seem as if nothing has changed, if so use code in SettingsHostActivity to save fragment instance and recreate it when onCreate() is called again
     //// DONE: 3/6/2017 this does not save the fragment, fragment is not put into bundle
-    // FIXME: 3/7/2017 fragment is not being saved during second device rotation because there is no fragment in the fragment manager?
+    // DONE: 3/7/2017 fragment is not being saved during second device rotation because there is no fragment in the fragment manager?
     @Override
     protected void onSaveInstanceState(Bundle outState){
-        Log.d("fragmentManagerState", "onSaveInstanceState: " + getSupportFragmentManager().getFragments());
+
         //saves fragment instance before fragment is killed
-        getSupportFragmentManager().putFragment(outState,"fragment",detailFragment);
+        getSupportFragmentManager().putFragment(outState,"fragment",getSupportFragmentManager().findFragmentById(R.id.detail_container));
         super.onSaveInstanceState(outState);
     }
 }

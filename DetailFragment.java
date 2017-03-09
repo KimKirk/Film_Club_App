@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class DetailFragment extends Fragment{
 
     // DONE: 3/1/2017 test this method to make sure it works correctly
-    // FIXME: 3/6/2017 this method does not work when you save the fragment instance inside host activity
+    // TODO: 3/6/2017 figure out how this method can be used inside DetailHostActivity in the future so that fragment field setting is independent of activity that host's it
     //this is a way to set the Fragment's fields so that you don't use the default constructor and then have to call setters
     public static DetailFragment newInstance(Parcelable movDetParcel){
         //create new instance of detail fragment
@@ -40,11 +40,7 @@ public class DetailFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        //restore data for fragment's text views here because when activity is created it means can access the data the activity shares with fragment
-        /*if(savedInstanceState != null){
-            //get data from Bundle
-            //set text for text views
-        }*/
+
         // DONE: 2/14/2017  get the data from the new instance of Detail Fragment
         // DONE: 2/14/2017  set the data on the views that will show the data
         TextView titleView = (TextView)getActivity().findViewById(R.id.original_title);
@@ -69,14 +65,6 @@ public class DetailFragment extends Fragment{
         return inflater.inflate(R.layout.detail_fragment,container, false);
     }
 
-    //saves the data from the fragment's textviews
-    /*@Override
-    public void onSavedInstanceState(Bundle outState){
-        //need to save text of TextViews
-
-
-        //call super to save default View values too
-        super.onSaveInstanceState(outState);
-    }*/
+    //don't need to save text for TextViews because already setting fragment's arguments each time fragment gets created and those arguments are set inside the fragment then just use code to set text views
 
 }

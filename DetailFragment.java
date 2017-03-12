@@ -53,8 +53,8 @@ public class DetailFragment extends Fragment{
 
         titleView.setText(movieDetailsParcel.getTitle());
         overvwView.setText(movieDetailsParcel.getOverview());
-        releaseDateView.setText(movieDetailsParcel.getRelease());
-        voteView.setText(movieDetailsParcel.getVote());
+        releaseDateView.setText("Release Date: " + movieDetailsParcel.getRelease());
+        voteView.setText("Average Rating: " + movieDetailsParcel.getVote()+ " /10");
 
     }
 

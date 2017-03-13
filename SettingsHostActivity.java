@@ -1,7 +1,6 @@
 package com.spellflight.android.popularmovies;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 /**
@@ -9,8 +8,9 @@ import android.support.v4.app.FragmentActivity;
  */
 public class SettingsHostActivity extends FragmentActivity {
 
-    //holds fragment instance that is saved in onSavedInstanceState
-    private Fragment fragment;
+    private android.app.Fragment mFragment;
+    //holds a newly created SettingsFragment instance
+    private SettingsFragment mSettingsFragment = new SettingsFragment();
 
 
     //TESTING: PASSED
@@ -19,27 +19,29 @@ public class SettingsHostActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_container);
 
-
-        //// DONE: 1/5/2017 this is not working, need to figure out how to add the fragment
-        //add Fragment to SettingHostActivity that shows Settings Menu
-        getFragmentManager().beginTransaction().add(R.id.container, new SettingsFragment()).commit();
-
-        //if bundle has data in it replace current fragment with previous fragment instance
-        //when fragment is recreated it will have previous instance's data
+        //if bundle has data in it replace current mFragment with previous mFragment instance
+        //when mFragment is recreated it will have previous instance's data
         if(savedInstanceState != null){
-            fragment = getSupportFragmentManager().getFragment(savedInstanceState, "fragment");
-            getSupportFragmentManager().beginTransaction().replace(R.id.container ,fragment).commit();
+            mFragment = getFragmentManager().getFragment(savedInstanceState,"mFragment");
+            getFragmentManager().beginTransaction().replace(R.id.container , mFragment).commit();
+        }
+        else {
+            //// DONE: 1/5/2017 this is not working, need to figure out how to add the mFragment
+            //add Fragment to SettingHostActivity that shows Settings Menu
+            //use getFragmentManager because you are using a Preference Fragment via SettingsFragment in add()
+            getFragmentManager().beginTransaction().add(R.id.container, mSettingsFragment).commit();
         }
 
     }
 
 
-    //TESTING: NOT TESTED
-    //puts fragment instance into the bundle, saves the fragment instance so that when it needs to be recreated host activity can retrieve saved fragment instance
-    //// TODO: 3/2/2017 decide if you need this code or not; do you need to save fragment instance to be used again when activity needs to attach previous fragment instance again?
+    //TESTING: PASSED
+    //puts mFragment instance into the bundle, saves the mFragment instance so that when it needs to be recreated host activity can retrieve saved mFragment instance
     @Override
     protected void onSaveInstanceState(Bundle outState){
-        getSupportFragmentManager().putFragment(outState,"fragment",fragment);
+        //gets the support fragment manager, puts current fragment instance that is found by the support fragment manager into the Bundle "outstate"
+        getFragmentManager().putFragment(outState,"mFragment",getFragmentManager().findFragmentById(R.id.container));
+        //saves Bundle
         super.onSaveInstanceState(outState);
     }
 }

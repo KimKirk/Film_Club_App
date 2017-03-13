@@ -13,6 +13,8 @@ import android.widget.TextView;
  */
 public class DetailFragment extends Fragment{
 
+
+
     // DONE: 3/1/2017 test this method to make sure it works correctly
     // TODO: 3/6/2017 figure out how this method can be used inside DetailHostActivity in the future so that fragment field setting is independent of activity that host's it
     //this is a way to set the Fragment's fields so that you don't use the default constructor and then have to call setters

@@ -17,55 +17,58 @@ import java.util.ArrayList;
 public class MovieImageAdapter extends ArrayAdapter {
     //DONE: figure out why need to override getItemId() method
 
+    //holds the string that has partial URL for image
     private String imageURL;
 
-
-    //constructor to create new MovieImageAdapter to be used to to create a new array adapter
+    //constructor to create new MovieImageAdapter to be used to create a new array adapter that holds only MovieDetails objects
+    //we create the constructor for the MovieImageAdapter class so that we can create a new object of the class type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
+    //this is considered a custom array adapter because it holds custom object which is MovieDetails and standard array adapter won't let you hold custom objects in it only String or Numbers
     public MovieImageAdapter(Context context, int resource, ArrayList<MovieDetails> objects) {
-        //we only want to use the parent constructor, we create the constructor for the MovieImageAdapter subclass so that we can create a new object of the subclass type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
+        //we only want to use the parent constructor to pass the values from MovieImageAdapter into so the method from the super class can do what it needs to do to create a new array adapter when given custom adapter input
         super(context, resource, objects);
-
 
     }
 
 
-    //called by AndroidOS only, the body of the method is where you take the paramters and use them to create the view that the arrayadapter sends into the layout and shows the view on screen
+    //called by AndroidOS only, the body of the method is where you take the parameters and use them to create the view that the arrayadapter sends into the layout and shows the view on screen
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        //position is the current position in the arrayadapter, returns an integer that represents the index position in array
+            //first time position will be at 0 in array, each time after the position will advance by 1 as it moves through array
+        //convertView is the View object that will be used to put new View into as arrayadapter creates new View to put on screen
+            //first time convertView is used it is null, each time after that convertView has a View already inside of it so you just use that convertView again to put a different View inside of it (this is how the recycling works)
+        //
 
+        //holds the value returned after create new ImageView object (because the Views that will show on screen are images, so need to save them into ImageView views)
         ImageView imageView;
 
-        //handling if there is no view object to put data into
+        //handling if convertView is empty then need to put a new View object into it
         if (convertView == null) {
+            //create a new ImageView using the ImageView constructor
             imageView = new ImageView(getContext());
         }
         else {
+            //convert the View that comes into this method into an ImageView so it can hold the image properly
             imageView = (ImageView) convertView;
         }
 
-        //position is used to get the current position of the data in the array/data structure...this returns an int so take the int and use arrayStructure[position] to extract data at that position in array
 
         // DONE: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
         //gets item in arrayadapter at the specified position
         MovieDetails imageObject = (MovieDetails)getItem(position);
         // DONE: 1/25/2017  go into object and retrieve just the "image" string
-
         imageURL = imageObject.img;
 
         // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
         //holds base URL to be added as prefix to string URL suffix from arrayadapter
         String baseURL = "https://image.tmdb.org/t/p/w500";
-                //need to use arraylist that sent into adapter and position value to get string in arraylist at that position
-                    //e.g. posterPath[position] see this note in evernote: Using Picasso with ArrayAdapter
 
-
-        //picasso will take each array data element and stick it into the view
-        //should load() have the current position in the array as its input (so get position in array and return the value there) then add the base URL to that result?
-        //make sure you are getting the arraylist that you sent into the adapter, don't create a new instance of the fetchmovies class or will get totally new arraylist in wrong position
+        //picasso will take each array data element and stick it into the View
+        //load() gets the data, into() gets the View object to stick data into
         Picasso.with(getContext()).load(baseURL + "/" + imageURL).into(imageView);
 
+        //return the View back to the caller of this method because the View is what will be used to put on screen for UI
         return imageView;
-
     }
 
     //DONE: add Picasso library to gradle

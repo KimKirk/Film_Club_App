@@ -11,9 +11,9 @@ import android.preference.PreferenceManager;
  */
 public class SettingsFragment extends PreferenceFragment {
 
-    //// TODO: 1/15/2017 REFACTOR CODE: SEE BELOW
-        //// TODO: 1/15/2017 look for redundant code and create a method to house it instead of having it in multiple areas inside class
-        //// TODO: 1/15/2017 replace "movie sort" with string
+    //// DONE: 1/15/2017 REFACTOR CODE: SEE BELOW
+        //// DONE: 1/15/2017 look for redundant code and create a method to house it instead of having it in multiple areas inside class
+        //// DONE: 1/15/2017 replace "movie sort" with string
 
     // DONE: 1/11/2017 this does not work, causes crash because both methods are called too many times, figure out how to create listener object that persists in memory and write method body for onSharedPreferenceChange
     //reference to listener persistent to avoid garbage collection
@@ -36,7 +36,6 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //adds Preference to SettingsFragment when created
         addPreferencesFromResource(R.xml.preferences);
         //have to set this for the fragment even though the default value for sharedpreferences is already set in mainactivity...the fragment has to know that its preference object will get the default value
@@ -51,6 +50,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     //must put retrieve Bundle data inside this method because Activity created means can get access to Preference data and Fragment instance needs access to Preference data, so wait until Activity is fully created then can get Preference restored Fragment instance
     //gets data from Bundle and sets summary for Preference
+    //TESTING: PASSED
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -68,6 +68,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     //creates a new listener as an anonymous inner class and sets it onto the SharedPreferences so that when the when the host Activity resumes so does the Fragment and the listener can be attached
     //// DONE: 1/12/2017 this does not work, it runs listener but does not run onSharedPreferencesChanged()
+    //TESTING: PASSED
     @Override
     public void onResume(){
         super.onResume();
@@ -109,6 +110,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     //you want to save the Preference object's summary data so can be used when recreate Preference object after destroyed
     //save Preference data
+    //TESTING: PASSED
     @Override
     public void onSaveInstanceState (Bundle outState){
         //get data from preference summary and save it to Bundle

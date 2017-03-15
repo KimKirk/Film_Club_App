@@ -53,10 +53,10 @@ public class DetailFragment extends Fragment{
         MovieDetailsParcel movieDetailsParcel = getArguments().getParcelable("movieDetails");
         //get field values from inside parcelable object using getters from the Parcelable class you created
 
-        titleView.setText(movieDetailsParcel.getTitle());
-        overvwView.setText(movieDetailsParcel.getOverview());
-        releaseDateView.setText("Release Date: " + movieDetailsParcel.getRelease());
-        voteView.setText("Average Rating: " + movieDetailsParcel.getVote()+ " /10");
+        titleView.setText(movieDetailsParcel.getmTitle());
+        overvwView.setText(movieDetailsParcel.getmOverview());
+        releaseDateView.setText("Release Date: " + movieDetailsParcel.getmRelease());
+        voteView.setText("Average Rating: " + movieDetailsParcel.getmVote()+ " /10");
 
     }
 

@@ -14,43 +14,43 @@ public class MovieDetailsParcel implements Parcelable {
     // DONE: 2/22/2017 test all of this class
 
     //holds data from MovieDetails object that you want to send to another component
-    private String vote;
-    private String title;
-    private String release;
-    private String overview;
+    private String mVote;
+    private String mTitle;
+    private String mRelease;
+    private String mOverview;
 
 
     //constructor used to create a new MovieDetailsParcel object that only sets fields for MovieDetailsParcel object
     public MovieDetailsParcel(String vte, String ttl, String rls, String ovrvw) {
         //sets the values for the the fields in the MovieDetailsParcel object; data values that come in set the value of the fields
-        this.vote = vte;
-        this.title = ttl;
-        this.release = rls;
-        this.overview = ovrvw;
+        this.mVote = vte;
+        this.mTitle = ttl;
+        this.mRelease = rls;
+        this.mOverview = ovrvw;
     }
 
     //create getters so that after you receive the Parcel object in another component you can also get the data values stored inside of it
-    public String getVote(){
-        return vote;
+    public String getmVote(){
+        return mVote;
     }
-    public String getTitle(){
-        return title;
+    public String getmTitle(){
+        return mTitle;
     }
-    public String getRelease(){
-        return release;
+    public String getmRelease(){
+        return mRelease;
     }
-    public String getOverview(){
-        return overview;
+    public String getmOverview(){
+        return mOverview;
     }
 
 
     //constructor used to create a new MovieDetailsParcel object that gets a Parcel passed into it and then reads/sets values for the Parcelable object
     //this is specific to how the Parcelable so that it has meta data needed to recreate the object at destination
     public MovieDetailsParcel(Parcel in) {
-        vote = in.readString();
-        title = in.readString();
-        release = in.readString();
-        overview = in.readString();
+        mVote = in.readString();
+        mTitle = in.readString();
+        mRelease = in.readString();
+        mOverview = in.readString();
     }
 
     // DONE: 2/22/2017 write comments so you know what this does
@@ -65,10 +65,10 @@ public class MovieDetailsParcel implements Parcelable {
     //this is specific to how the Parcelable works so that it has meta data needed to recreate the object at destination
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(vote);
-        dest.writeString(title);
-        dest.writeString(release);
-        dest.writeString(overview);
+        dest.writeString(mVote);
+        dest.writeString(mTitle);
+        dest.writeString(mRelease);
+        dest.writeString(mOverview);
     }
 
     //regenerates the Parcel object that holds the data so that each time you need to use the Parcel object, it doesn't create a new one just uses the reference pointer for the current Parcel object

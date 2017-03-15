@@ -11,7 +11,7 @@ import android.os.Parcelable;
 
 //this class creates the Parcelable object that is sent between components
 public class MovieDetailsParcel implements Parcelable {
-    // TODO: 2/22/2017 test all of this class
+    // DONE: 2/22/2017 test all of this class
 
     //holds data from MovieDetails object that you want to send to another component
     private String vote;

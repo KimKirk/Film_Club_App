@@ -57,7 +57,7 @@ public class MovieImageAdapter extends ArrayAdapter {
         //gets item in arrayadapter at the specified position
         MovieDetails imageObject = (MovieDetails)getItem(position);
         // DONE: 1/25/2017  go into object and retrieve just the "image" string
-        mImageUrl = imageObject.img;
+        mImageUrl = imageObject.mImg;
 
         // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
         //holds base URL to be added as prefix to string URL suffix from arrayadapter

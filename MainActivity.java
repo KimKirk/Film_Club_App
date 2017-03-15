@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //add extra data to the Intent
                 // DONE: 2/1/2017 get name of Parcelable class and complete this method
-                intent.putExtra("movieDetails",new MovieDetailsParcel(data.voteAvg,data.orgTitle,data.releaseDt,data.overVw) );
+                intent.putExtra("movieDetails",new MovieDetailsParcel(data.mVoteAvg,data.mOrgTitle,data.mReleaseDt,data.mOverVw) );
 
                 //Intent opens a new fragment and passes the extra data from the arrayadapter to the fragment
                 startActivity(intent);

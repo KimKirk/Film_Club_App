@@ -38,19 +38,22 @@ import java.util.ListIterator;
 public class MainActivity extends AppCompatActivity {
 
     //// TODO: 1/11/2017 check that these variable names fit with Android syntax convention (when to put mVariableName)
-    private GridView gridView;
-    private FetchMovies posterPath = new FetchMovies();
-    private String userSortDefault = "";
-    private MovieImageAdapter arrayAdapter;
-    private ArrayList<MovieDetails> arrayOfMovieDetailsObjects = new ArrayList<MovieDetails>();
-    private String prefKey = "user preference";
-    private String changeOut = "";
-    private SharedPreferences defaultSharedPreferences;
-    private SharedPreferences.Editor editor;
-    private Bundle bundle;
+    private GridView mGridView;
+    private FetchMovies mPosterPath = new FetchMovies();
+    private String mUserSortDefault = "";
+    private MovieImageAdapter mArrayAdapter;
+    private ArrayList<MovieDetails> mArrayOfMovieDetailsObjects = new ArrayList<MovieDetails>();
+    private String mPreferenceKey = "user preference";
+    private String mChangeOut = "";
+    private SharedPreferences mDefaultSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+    private String mSharedPreferencesKey = "movie sort";
+    private String mDefaultSharedPreferencesValue = "popular";
 
-// TODO: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class 
+
+    // TODO: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class
     //TESTING: PASSED
+    // TODO: 3/15/2017 move getDataFromServer method so that it is before getDataFromJSON method so that less skipping of lines when run doInBackground method?
 
     //called by AndroidOS when activity first starts after install app and when activity created after being destroyed
     @Override
@@ -61,68 +64,62 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TESTING: PASSED
-        //// DONE: 1/13/2017 does not use user's current preference
-        //checks to see if Bundle is filled with data and if so...
-        if(savedInstanceState != null) {
-            //making sure the newly created mainactivity has the preference value the user last chose
-            //retrieve default sharedpreferences
-            defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            //get an editor so you can make changes to sharedpreferences file
-             editor = defaultSharedPreferences.edit();
-            //get data from Bundle which will be the value of the preference the user chose
-            //edit the sharedpreference object so that it finds the listpreference and adds the preference value the user chose
-            editor.putString("movie sort", (String) savedInstanceState.getCharSequence(prefKey));
+        // DONE: 1/13/2017 does not use user's current preference
+        //checks to see if Bundle is filled with data and if so retrieves the default SharedPreferences file and uses and editor to put the value of the Preference object for the value of SharedPreferences file value
+        if(savedInstanceState != null) {//making sure the newly created mainactivity has the preference value the user last chose
+            //retrieve SharedPreferences file that has the current default value for the Preferences object
+            mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            //get an mEditor so you can make changes to SharedPreferences file
+             mEditor = mDefaultSharedPreferences.edit();
+            //get data from Bundle which will be the value of the Preference the user chose
+            //edit the SharedPreference file so that it finds the ListPreference and adds the Preference object value the user chose
+            mEditor.putString(mSharedPreferencesKey, (String) savedInstanceState.getCharSequence(mPreferenceKey));
             //commit the changes or they will not be saved
-            editor.commit();
+            mEditor.commit();
 
         }
-        else {//if Bundle is empty means activity is being run after being destroyed or upon install app
-            //set the default value for the sharedpreference file
-            //get the sharedpreferences file
-            defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            //get an editor so you can make changes to sharedpreferences file
-            editor = defaultSharedPreferences.edit();
-            //write the default value to sharedpreferences file
-            editor.putString("movie sort", "popular");
+        else {//if Bundle is empty means Activity is being run after being destroyed or upon install app
+            //set the default value for the SharedPreferences file
+            //get the SharedPreferences file
+            mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            //get an mEditor so you can make changes to sharedpreferences file
+            mEditor = mDefaultSharedPreferences.edit();
+            //write the default value to SharedPreferences file
+            mEditor.putString(mSharedPreferencesKey, mDefaultSharedPreferencesValue);
             //commit the changes or they will not be saved
-            editor.commit();
+            mEditor.commit();
 
         }
         //set the string that goes into doInBackground so you can pass that string to create the URL that gets the data from the server
-        //uses the value of the sharedpreference which should be "popular"
-        userSortDefault = defaultSharedPreferences.getString("movie sort", "") ;
+        //uses the value of the SharedPreferences file which should be "popular"
+        mUserSortDefault = mDefaultSharedPreferences.getString(mSharedPreferencesKey, "") ;
 
 
         //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
         //holds arrayadapter that is created using the MovieImageAdapter class constructor
-        arrayAdapter = new MovieImageAdapter(this, R.layout.activity_main, arrayOfMovieDetailsObjects);
+        mArrayAdapter = new MovieImageAdapter(this, R.layout.activity_main, mArrayOfMovieDetailsObjects);
         //holds the layout for this activity
-        gridView = (GridView) findViewById(R.id.grid_view);
+        mGridView = (GridView) findViewById(R.id.grid_view);
         //sets the arrayadapter on the layout for the activity so they are bound together
-        gridView.setAdapter(arrayAdapter);
+        mGridView.setAdapter(mArrayAdapter);
         //add listener to gridview that listens for user to click on image
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //create anonymous class that holds the listener and overrides the onItemClick method as required, then applies listener to the gridview
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //create anonymous inner class that holds the listener and overrides the onItemClick method as required, then applies listener to the gridview
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //takes in the gridview along with position it has in the arrayadapter
-
                 //get the extra data to be put into the Bundle
                 //get position in adapter
                 //get object in the adapter at the position
-                MovieDetails data = (MovieDetails) arrayAdapter.getItem(position);
-
+                MovieDetails data = (MovieDetails) mArrayAdapter.getItem(position);
                 //create a new Intent
                 // DONE: 2/1/2017 get the name of the detail Fragment class and complete this method
                 Intent intent = new Intent(getApplicationContext(), DetailHostActivity.class);
-
                 // DONE: 2/23/2017 figure out what the error message means for below line of code
-
                 //add extra data to the Intent
                 // DONE: 2/1/2017 get name of Parcelable class and complete this method
                 intent.putExtra("movieDetails",new MovieDetailsParcel(data.mVoteAvg,data.mOrgTitle,data.mReleaseDt,data.mOverVw) );
-
                 //Intent opens a new fragment and passes the extra data from the arrayadapter to the fragment
                 startActivity(intent);
             }
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         //starts the task for Asynctask so that a new thread and new task can begin and do work in background of getting the URL data
         //sends in string to pass to doInBackground to be used to create URL to get data from server
-        startTask(userSortDefault);
+        startTask(mUserSortDefault);
     }
 
     //TESTING: PASSED
@@ -154,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SettingsHostActivity.class);
                 startActivity(intent);
                 return true;
-            default:
+            default://otherwise if the id is not R.id.menu_item then just use the functionality in the superclass method on whatever was clicked
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //// DONE: 1/12/2017 task can only be executed once
+    // DONE: 1/12/2017 task can only be executed once
     //TESTING: PASSED
     //no information is listed in documentation for Asynctask as to whether or not the thread is killed when the task has completed. I researched this subject through Google and found developers who claim it does thus felt it safe to create a new thread and start a new task.
     //when get back from fragment, need to make sure the images seen on screen match with the settings menu option the user chose
@@ -170,24 +167,24 @@ public class MainActivity extends AppCompatActivity {
         //create new FetchMovies object so we can create a new thread and a new task because thread can only run one task once
         FetchMovies newFetchMoviesTask = new FetchMovies();
         //holds value of sharedpreference file for the preference object
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //retrieve value from default sharedpreferences file
-        changeOut = defaultSharedPreferences.getString("movie sort", "");
+        // TODO: 3/15/2017 see if can instantiate this member variable at top of source file then just use variable name as needed throughout this Activity
+        mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //retrieve value from default SharedPreferences file
+        mChangeOut = mDefaultSharedPreferences.getString(mSharedPreferencesKey, "");
         //use this value as input to execute a new thread and new task and pass the value into doInBackground so can be used to create URL that gets data from server
-        newFetchMoviesTask.execute(changeOut);
+        newFetchMoviesTask.execute(mChangeOut);
     }
 
     //TESTING: PASSED
-    //making sure to save the value of the preference the user last chose
+    //making sure to save the value in the Preference object that the user last chose
     @Override
     public void onSaveInstanceState (Bundle outState){
         //get user preference value
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //retrieve value from default sharedpreferences
-        String prefToSave = defaultSharedPreferences.getString("movie sort", "");
-                //getUserPreferenceSelection();
+        mDefaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //retrieve default value from SharedPreferences file
+        String prefToSave = mDefaultSharedPreferences.getString(mSharedPreferencesKey, "");
         //save preference data to Bundle
-        outState.putCharSequence(prefKey, prefToSave);
+        outState.putCharSequence(mPreferenceKey, prefToSave);
         //put this last because you want to send the Bundle into the method as this method saves the Bundle...get the data you want to save then save the Bundle
         super.onSaveInstanceState(outState);
 
@@ -204,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         //if there is a network object that has data in it from previous line of code AND if the network activity is listed as connected
         if(networkInfo != null && networkInfo.isConnected()) {
             //create the new thread and new task using the string you sent into the startTask method
-            posterPath.execute(userPreference);
+            mPosterPath.execute(userPreference);
             // DONE: 12/2/2016 remove line below
         } else {//if either no network connection or can't get info on network, let user know by sending them message through toast
             Toast toast = Toast.makeText(MainActivity.this,R.string.network_check,Toast.LENGTH_SHORT);
@@ -220,13 +217,20 @@ public class MainActivity extends AppCompatActivity {
      */
     public class FetchMovies extends AsyncTask<String, Void, ArrayList<MovieDetails>> {//these are part of the signature of the class to tell AndroidOS what data type it can expect you to pass to the methods inside of Asynctask class
 
-        //String is ..., Void is ..., ArrayList is ...
+        //String is string value you passed into "execute" method, AsyncTask uses pass by value and puts the value into an array that you have to access in order to use the value, and value is used in doInBackground method in AsyncTask class
+        //Void means no value is being passed to onPreExecute method used in AsyncTask class
+        //ArrayList is the arraylist full of MovieDetails objects that is used
 
         //// TODO: 1/24/2017 refactor code: check that these variables are initialized correctly
-        private String lineOfText = null;
-        private ArrayList<MovieDetails> posterArray = new ArrayList<MovieDetails>();
+        //holds the data read from the server
+        private String rawDataFromServer = null;
+        //holds an array of MovieDetails objects of which has the data required to set the text on TextViews in the FragmentDetails UI
+        private ArrayList<MovieDetails> movieDetailsArrayList = new ArrayList<MovieDetails>();
+        //holds data retrieved from the server
         String dataFromServer;
+        //holds an array list of MovieDetails objects from the JSON data
         ArrayList<MovieDetails> dataFromJson;
+        //holds the progress bar for the UI
         ProgressBar progressBar;
 
 
@@ -251,15 +255,16 @@ public class MainActivity extends AppCompatActivity {
         //DONE: check if parameter type is accurate and return type is accurate
         //DONE: 12/9/2016 find out how to throw exception from doInBackground, I think this is why it is not overriding the method
         //this method is called by AndroidOS
-        //should return result that onPostExecute() will need as input param
-        //does the actual work of the task, work of the task is further broken up into two methods so that it is easier to update those methods without having to change the code inside doInBackground and so that functionality is grouped together
-        protected ArrayList<MovieDetails> doInBackground(String...params) {
+        //should return result that onPostExecute() will need as its input parameter
+        protected ArrayList<MovieDetails> doInBackground(String...params) {//does the actual work of the task, work of the task is further broken up into two methods so that it is easier to update those methods without having to change the code inside doInBackground and so that functionality is grouped together
 
+            //holds the log message used for exception handling
             String badMethodCall = "bad method call(s)";
+
             try {//the code inside this try block has the ability to produce a method call exception
                 //call get data from server and get the string that you sent into execute() that was passed into the "params" variable that is an array so you must get the string from inside of the array
                 dataFromServer = getDataFromServer(params[0]);
-                //use the string held inside dataFromServer as input for getDataFromJson becuase this method requires a string input
+                //use the string held inside dataFromServer as input for getDataFromJson because this method requires a string input
                 dataFromJson = getDataFromJson(dataFromServer);
                 //if dataFromJson is empty return null so that you don't get an error for return value when doInBackground() runs and doesn't return anything
                 if (dataFromJson.isEmpty()) {
@@ -273,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
             }
             //if you don't have any exceptions just return whatever dataFromJson is holding, which is the return value from getDataFromJson() which is an arraylist
             return dataFromJson;
-            //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
+
         }
 
 
@@ -281,47 +286,46 @@ public class MainActivity extends AppCompatActivity {
             //this method is called by AndroidOS
         // DONE: 12/9/2016 figure out why this is telling me it isn't overriding
         @Override
-        protected void onPostExecute(ArrayList<MovieDetails> result) {
+        protected void onPostExecute(ArrayList<MovieDetails> result) {//send in arraylist of moviedetails
             //DONE: CHECK THAT THIS DOES NOT CLEAR THE LIST OF DATA
             if (result != null) {
-                //not first time received result List of items which means arrayadapter has stuff in it already
-                //clear out what is already in arrayadapter so can add new stuff no dups
-                arrayAdapter.clear();
+                //not first time received "result" ArrayList of items which means arrayadapter might have stuff in it already
+                //clear out what is already in arrayadapter so can add new stuff no duplicates
+                mArrayAdapter.clear();
                 //go through each element in the arraylist and add each element to the arrayadapter
-                //create an iterator for the result List
+                //create an iterator for the "result" variable that holds the ArrayList
                 ListIterator resultIterator = result.listIterator();
                 while (resultIterator.hasNext()) {
-                    //for(String urlPath : result) {
-                    //get the element in the current position
-                    //add the element to the arrayAdapter
+                    //add the data at that element in the MovieDetails ArrayList to the mArrayAdapter
                     //arrayadapter has as each of its elements a MovieDetails object
-                    arrayAdapter.add(resultIterator.next());
+                    mArrayAdapter.add(resultIterator.next());
                 }
             }
-
-            else {
+            else {//if don't receive an ArrayList in the "result" variable, something went wrong
                 // DONE: 12/18/2016  add Toast that tells user the data could not be obtained from server...please try again later in 10 - 15 sec
                 Toast toast = Toast.makeText(getApplicationContext(), "No new data from server. Try again in 10 sec.", Toast.LENGTH_SHORT);
                 toast.show();
             }
+            //we don't need to show the progress bar visiblity anymore because the fetching of the data has completed
             progressBar.setVisibility(ProgressBar.INVISIBLE);
-
         }
 
 
         //gets data from json object
         // use json object that has json data and pass it into json array so it's easier to get json data out of array, once out of array put into ArrayList with just the data item from the json array that you want
-        //should return an arraylist to whomever called it so they can use that arraylist
+        //should return an arraylist to whomever called it (doInBackground method) so they can use that arraylist as needed
         //TESTING: PASSED
         public ArrayList<MovieDetails> getDataFromJson(String text) throws Exception {
 
+            //holds log message for exception handling
             final String badJson = "check JSON object or JSON array";
+            //holds JSONObject that holds a JSONARrray data
             JSONObject jsonArrayJSONObject;
 
-            // bufferedreader holds json so need to create json object and json array to extract needed data
-            //pull data from the reader object into a json object
+            // "text" variable holds JSON data so need to create JSON object and JSON array to extract needed data
+            //pull data from the "text" variable into a JSON object
             try {//the code inside this try block could produce a JSON exception if there is a null object that occurs
-                //create JsonObject so you can use the methods in the JSON class to do stuff with Json data
+                //create JsonObject so you can use the methods in the JSON class to do stuff with JSON data, namely get a JSONarray to hold the JSON data
                 JSONObject jsonObject = new JSONObject(text);
                 //get the array inside the Json data; array begins with "results" keyword
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
@@ -329,34 +333,18 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     //use Json array to get Json object stored in each element of the Json array
                     jsonArrayJSONObject = jsonArray.getJSONObject(i);
-                    //go into object and use key to get value
-                    //get String overview and put into variable
-                    // get String releaseDate and put into variable
-                    // get String originalTitle and put into variable
-                    // get Float voteAverage and put into variable
-                    /*String posterPath = jsonArrayJSONObject.getString("poster_path");
-                    String posterPath = jsonArrayJSONObject.getString("overview");
-                    String posterPath = jsonArrayJSONObject.getString("release_date");
-                    String posterPath = jsonArrayJSONObject.getString("original_title");
-                    String posterPath = jsonArrayJSONObject.getDouble("vote_average");*/
-
-                    /*Log.d("toString check", "doInBackground: " + "posterPath");*/
-                    //pass variables with values into new MovieDetails object
-                    /*new MovieDetails(jsonArrayJSONObject.getString("poster_path"), jsonArrayJSONObject.getString("overview"), jsonArrayJSONObject.getString("release_date"), jsonArrayJSONObject.getString("original_title"), jsonArrayJSONObject.getDouble("vote_average"));
-                    //put object into arraylist
-                    //posterArray.add(moviedetails object);*/
-                    posterArray.add(new MovieDetails(jsonArrayJSONObject.getString("poster_path"), jsonArrayJSONObject.getString("overview"), jsonArrayJSONObject.getString("release_date"), jsonArrayJSONObject.getString("original_title"), jsonArrayJSONObject.getDouble("vote_average")));
-                    Log.d("arrayList check", "doInBackground: " + posterArray.get(i));
-                }
+                    //add that JSON object into the MovieDetails array; use the key to get the specific value at that key (e.g. "poster_path is key, value is URL, etc.)
+                    movieDetailsArrayList.add(new MovieDetails(jsonArrayJSONObject.getString("poster_path"), jsonArrayJSONObject.getString("overview"), jsonArrayJSONObject.getString("release_date"), jsonArrayJSONObject.getString("original_title"), jsonArrayJSONObject.getDouble("vote_average")));
+                                    }
             } catch (JSONException jse) {//catch any exceptions that occur and get passed to you by AndroidOS inside of "jse"
                 //take that value in "jse" and show it in the log but don't crash the app
                 Log.d(badJson, "getDataFromJson: ");
-            } finally {//this needs to always run
-                if (posterArray.isEmpty()) {//check if arraylist is null that is supposed to hold values you pulled from json data
-                    //rreturn null so that you don't get an error for return value when doInBackground() runs and doesn't return a value
+            } finally {//this needs to always run even if exception occurs
+                if (movieDetailsArrayList.isEmpty()) {//check if arraylist is null that is supposed to hold values you pulled from json data
+                    //return null so that you don't get an error for return value when doInBackground() runs and doesn't return a value
                     return null;
                 }//otherwise if the arraylist is not null return the arraylist
-                return posterArray;
+                return movieDetailsArrayList;
             }
             //DONE: 3rd - 11/18/2016 fetch the data/images from themoviedb.org need to start http request, need to stream data into program, do I need to create an array that holds the URL for each image? that Picasso then uses in the load() method?
             //DONE: 2nd - after put data into json array figure out how to add to regular array so adapter can use the data? does adapter take json array?
@@ -365,12 +353,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
         //fetches data from the server
         //TESTING: PASSED
         protected String getDataFromServer(String prefOption) throws Exception {
 
+            //holds log message for exception handling, gives info on specific method to check for error
             final String badUrl = "check URL";
             final String badProtocolRequest = "check setRequestMethod()";
             final String badEncoding = "check InputStreamReader";
@@ -380,15 +367,21 @@ public class MainActivity extends AppCompatActivity {
             final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/"+prefOption+"?";
             final String API_KEY_PARAM = "api_key";
             final String LANGUAGE_PARAM = "language";
+            //holds URL to be used to fetch data from the server
             URL url = null;
+            //holds reader used to read incoming data from input stream into program
             BufferedReader reader;
+            //holds input stream that streams data from server to your computer's memory
             InputStream inputStream = null;
+            //holds HTTP connector
             HttpURLConnection connection = null;
+            //holds URI used to build URL
             Uri builtUri;
 
             try {//the code inside of this try block can produce a malformed URL exception
                 //FIXME: key is 821d4fff9880f197021eaccba83fb04f
                 // FIXME: 12/2/2016 here is the final url that shows the data you will get from server https://api.themoviedb.org/3/movie/popular?&api_key=821d4fff9880f197021eaccba83fb04f&language=en-US
+                //TODO: 11/18/2016 note in a README where it came from, so someone else trying to run your code can create their own key and will quickly know where to put it. Instructors and code reviewers will expect this behavior for any public GitHub code.
 
                 //build a new URI so that you can encode the URL properly when it is used as input for HTTP connection
                 builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
@@ -404,18 +397,24 @@ public class MainActivity extends AppCompatActivity {
 
             //opens the http connection and the stream, streams in data
             try {//the code inside of this try block can produce an exception and because there are multiple areas in the code that can do that put them all inside one try block for convenience
+                //open the HTTP connectiong using the URL you built
                 connection = (HttpURLConnection) url.openConnection();
+                //use the HTTP connection to send a GET request to server to let it know you are requesting data
                 connection.setRequestMethod("GET");
+                //connect to the server
                 connection.connect();
+                //set an input stream onto the connection so you can stream data into your computer's memory
                 inputStream = connection.getInputStream();
 
-                //bufferedreader is holding the data from the server
+                //bufferedreader is holding the data from the server as a field/property inside of the BufferedReader object
                 reader = new BufferedReader((new InputStreamReader(inputStream, "UTF-8")));
 
-                //take data in reader and convert to a string to be used as input to json object in other method
-                lineOfText = reader.readLine();
+                //take data in BufferedReader and convert to a string to be used as input to json object in getDataFromJSON method
+                rawDataFromServer = reader.readLine();
 
                 //catch all of the possible exception types starting with most specialized to most generic
+                //catch each exception inside of its variable and log the exception but don't crash the app
+                // TODO: 3/15/2017 think about if need to create more code than just logging the error to make the app do a specific thing in case of exception?
             } catch (ProtocolException pr) {
                 Log.d(badProtocolRequest, "getDataFromServer: ");
             } catch (UnsupportedEncodingException uc) {
@@ -427,9 +426,8 @@ public class MainActivity extends AppCompatActivity {
 
 
             } finally {//this always runs
-                try {//the code in this try block can produce an exception
+                try {//the code in this try block can produce an exception so must put into try/catch exception handler
                     if (inputStream != null) {//close the open stream of there is no input coming from the stream
-
                         inputStream.close();
                     }
                 } catch (IOException ioe) {//catch that exception AndroidOS passes to you and save it inside of the "ioe" variable
@@ -439,8 +437,8 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 }//close the connection you opened
                 connection.disconnect();
-                //return data that is being held inside of the variable the data you received from the stream
-                return lineOfText;
+                //return data that is being held inside of the variable "rawDataFromServer" which is the data you received from the stream
+                return rawDataFromServer;
             }
         }
     }

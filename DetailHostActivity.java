@@ -33,8 +33,10 @@ public class DetailHostActivity extends FragmentActivity {
             //replaces any current mFragment with new mFragment instance
             getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, mFragment).commit();
         }
-        else {//if Bundle is empty then create new Fragment with arguments that set fields inside Fragment and attach Fragment to host Activity
-            //set arguments for Fragment--this allows you to pass data into the newly created Fragment so it has the data you pass to it, this is for the first time the mFragment is created
+        else {//if Bundle is empty then create new Fragment with arguments that set fields inside
+            // Fragment and attach Fragment to host Activity
+            //set arguments for Fragment--this allows you to pass data into the newly created Fragment so
+            // it has the data you pass to it, this is for the first time the mFragment is created
             mDetailFragment.setArguments(getIntent().getExtras());
             // DONE: 1/5/2017 this is not working, need to figure out how to add the mFragment
             //add Fragment to host Activity

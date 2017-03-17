@@ -21,30 +21,31 @@ public class MovieDetailsParcel implements Parcelable {
 
 
     //constructor used to create a new MovieDetailsParcel object that only sets fields for MovieDetailsParcel object
-    public MovieDetailsParcel(String vte, String ttl, String rls, String ovrvw) {
+    public MovieDetailsParcel(String vote, String title, String release, String overview) {
         //sets the values for the the fields in the MovieDetailsParcel object; data values that come in set the value of the fields
-        this.mVote = vte;
-        this.mTitle = ttl;
-        this.mRelease = rls;
-        this.mOverview = ovrvw;
+        this.mVote = vote;
+        this.mTitle = title;
+        this.mRelease = release;
+        this.mOverview = overview;
     }
 
     //create getters so that after you receive the Parcel object in another component you can also get the data values stored inside of it
-    public String getmVote(){
+    public String getVote(){
         return mVote;
     }
-    public String getmTitle(){
+    public String getTitle(){
         return mTitle;
     }
-    public String getmRelease(){
+    public String getReleaseDate(){
         return mRelease;
     }
-    public String getmOverview(){
+    public String getOverview(){
         return mOverview;
     }
 
 
-    //constructor used to create a new MovieDetailsParcel object that gets a Parcel passed into it and then reads/sets values for the Parcelable object
+    //constructor used to create a new MovieDetailsParcel object that gets a Parcel passed into it and
+    // then reads/sets values for the Parcelable object
     //this is specific to how the Parcelable so that it has meta data needed to recreate the object at destination
     public MovieDetailsParcel(Parcel in) {
         mVote = in.readString();
@@ -71,7 +72,8 @@ public class MovieDetailsParcel implements Parcelable {
         dest.writeString(mOverview);
     }
 
-    //regenerates the Parcel object that holds the data so that each time you need to use the Parcel object, it doesn't create a new one just uses the reference pointer for the current Parcel object
+    //regenerates the Parcel object that holds the data so that each time you need to use the
+    // Parcel object, it doesn't create a new one just uses the reference pointer for the current Parcel object
     //created as an anonymous inner class because will only be used inside this class and nowhere else in the program
     public static final Parcelable.Creator<MovieDetailsParcel> CREATOR =
             new Parcelable.Creator<MovieDetailsParcel>() {

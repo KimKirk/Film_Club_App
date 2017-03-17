@@ -21,43 +21,49 @@ public class MovieImageAdapter extends ArrayAdapter {
     private String mImageUrl;
 
     //constructor to create new MovieImageAdapter to be used to create a new array adapter that holds only MovieDetails objects
-    //we create the constructor for the MovieImageAdapter class so that we can create a new object of the class type and so we can pass the values to the superclass constructor and it can use the values as needed to construct a new array adapter
-    //this is considered a custom array adapter because it holds custom object which is MovieDetails and standard array adapter won't let you hold custom objects in it only String or Numbers
+    //we create the constructor for the MovieImageAdapter class so that we can create a new object of
+    // the class type and so we can pass the values to the superclass constructor and it can use
+    // the values as needed to construct a new array adapter
+    //this is considered a custom array adapter because it holds custom object which is MovieDetails and
+    // standard array adapter won't let you hold custom objects in it only String or Numbers
     public MovieImageAdapter(Context context, int resource, ArrayList<MovieDetails> objects) {
-        //we only want to use the parent constructor to pass the values from MovieImageAdapter into so the method from the super class can do what it needs to do to create a new array adapter when given custom adapter input
+        //we only want to use the parent constructor to pass the values from MovieImageAdapter into
+        // so the method from the super class can do what it needs to do to create a new array adapter when given custom adapter input
         super(context, resource, objects);
 
     }
 
 
-    //called by AndroidOS only, the body of the method is where you take the parameters and use them to create the view that the arrayadapter sends into the layout and shows the view on screen
+    //called by AndroidOS only, the body of the method is where you take the parameters and use them to
+    // create the view that the arrayadapter sends into the layout and shows the view on screen
+    //parameters:
+        //position is the current position in the arrayadapter, returns an integer that represents the index position in array
+        //first time position will be at 0 in array, each time after the position will advance by 1 as it moves through array
+        //convertView is the View object that will be used to put new View into as arrayadapter creates new View to put on screen
+            //first time convertView is used it is null, each time after that convertView has a View already inside
+    // of it so you just use that convertView again to put a different View inside of it (this is how the recycling works)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //position is the current position in the arrayadapter, returns an integer that represents the index position in array
-            //first time position will be at 0 in array, each time after the position will advance by 1 as it moves through array
-        //convertView is the View object that will be used to put new View into as arrayadapter creates new View to put on screen
-            //first time convertView is used it is null, each time after that convertView has a View already inside of it so you just use that convertView again to put a different View inside of it (this is how the recycling works)
-        //
-
-        //holds the value returned after create new ImageView object (because the Views that will show on screen are images, so need to save them into ImageView views)
+        //holds the value returned after create new ImageView object (because the Views that will show on
+        // screen are images, so need to save them into ImageView views)
         ImageView imageView;
 
         //handling if convertView is empty then need to put a new View object into it
+        //create a new ImageView using the ImageView constructor
         if (convertView == null) {
-            //create a new ImageView using the ImageView constructor
             imageView = new ImageView(getContext());
         }
+
+        //convert the View that comes into this method into an ImageView so it can hold the image properly
         else {
-            //convert the View that comes into this method into an ImageView so it can hold the image properly
             imageView = (ImageView) convertView;
         }
-
 
         // DONE: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
         //gets item in arrayadapter at the specified position
         MovieDetails imageObject = (MovieDetails)getItem(position);
         // DONE: 1/25/2017  go into object and retrieve just the "image" string
-        mImageUrl = imageObject.mImg;
+        mImageUrl = imageObject.mImage;
 
         // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
         //holds base URL to be added as prefix to string URL suffix from arrayadapter

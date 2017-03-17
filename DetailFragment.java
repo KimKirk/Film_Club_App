@@ -16,7 +16,9 @@ public class DetailFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        //Fragment instance gets recreated in host Activity with Fragment arguments, so don't need to take saved data and set Views here because the data is set inside Fragment instance with arguments each time Fragment is created
+        //Fragment instance gets recreated in host Activity with Fragment arguments, so
+        // don't need to take saved data and set Views here because the data is set inside Fragment instance with
+        // arguments each time Fragment is created
         super.onCreate(savedInstanceState);
     }
 
@@ -33,21 +35,26 @@ public class DetailFragment extends Fragment{
         TextView overvwView = (TextView)getActivity().findViewById(R.id.overview);
         TextView releaseDateView = (TextView)getActivity().findViewById(R.id.release_date);
         TextView voteView = (TextView)getActivity().findViewById(R.id.vote_average);
+
         //get the arguments from the Fragment and get the Parcelable object with the given key
         MovieDetailsParcel movieDetailsParcel = getArguments().getParcelable("movieDetails");
+
         //get field values from inside parcelable object using getters from the Parcelable class you created
-        titleView.setText(movieDetailsParcel.getmTitle());
-        overvwView.setText(movieDetailsParcel.getmOverview());
-        releaseDateView.setText("Release Date: " + movieDetailsParcel.getmRelease());
-        voteView.setText("Average Rating: " + movieDetailsParcel.getmVote()+ " /10");
+        titleView.setText(movieDetailsParcel.getTitle());
+        overvwView.setText(movieDetailsParcel.getOverview());
+        releaseDateView.setText("Release Date: " + movieDetailsParcel.getReleaseDate());
+        voteView.setText("Average Rating: " + movieDetailsParcel.getVote()+ " /10");
 
     }
 
 
-    //don't need to save text for TextViews because already setting Fragment's arguments each time fragment gets created and those arguments are set inside the Fragment then just use getters from MovieDetailsParcel class  to set text views
+    //don't need to save text for TextViews because already setting Fragment's arguments each
+    // time fragment gets created and those arguments are set inside the Fragment then just use
+    // getters from MovieDetailsParcel class  to set text views
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        //inflate the layout and use the View hierarchy from the host Activity to tell AndroidOS where to put the Fragment's View in the host Activity's hierarchy
+        //inflate the layout and use the View hierarchy from the host Activity to tell AndroidOS where to
+        // put the Fragment's View in the host Activity's hierarchy
         return inflater.inflate(R.layout.detail_fragment,container, false);
     }
 

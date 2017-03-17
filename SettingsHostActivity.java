@@ -30,7 +30,7 @@ public class SettingsHostActivity extends FragmentActivity {
             //get the Fragment stored inside the Bundle of savedInstanceState
             //start transaction to replace any current Fragment with Fragment inside of mFragment
             mFragment = getFragmentManager().getFragment(savedInstanceState,"mFragment");
-            getFragmentManager().beginTransaction().replace(R.id.container , mFragment).commit();
+            getFragmentManager().beginTransaction().replace(R.id.container, mFragment).commit();
         }
 
         //if the Bundle sent into onCreate method is empty then just attach the Settings Fragment to the host Activity

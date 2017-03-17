@@ -177,20 +177,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     //TESTING: PASSED
+    //gets the id of the item that was clicked on by user
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        //gets the id of the item that was clicked on by user
-        //if the id is the settings menu item
-        if(item.getItemId() == R.id.menu_item) {
-            //creates a new intent to open the fragment that has the settings menu/preference
-            Intent intent = new Intent(getApplicationContext(), SettingsHostActivity.class);
-            startActivity(intent);
-            return true;
-        }
 
-        //otherwise if the id is not R.id.menu_item then just use the functionality in the superclass method on whatever was clicked
-        else {
-            return super.onOptionsItemSelected(item);
+        //check item id
+        switch (item.getItemId()) {
+            //check if it's id for settings menu item
+            //start new intent to open SettingsHostActivity
+            case R.id.settings_menu_item: Intent settingsIntent = new Intent(getApplicationContext(), SettingsHostActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
+            //check if it's id for about menu item
+            //start new intent to open AboutHostActivity
+            case R.id.about_menu_item: Intent aboutIntent = new Intent(getApplicationContext(), AboutHostActivity.class);
+                startActivity(aboutIntent);
+                return true;
+
+            //neither id then just run superclass method and pass in whatever item id it was
+            default: return super.onOptionsItemSelected(item);
+
         }
 
     }

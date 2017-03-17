@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MovieDetails> mArrayMovieDetails = new ArrayList<MovieDetails>();
 
     //holds user preference key
-    private String mPreferenceKey = "user preference";
+    private final String PREFERENCE_KEY = "user preference";
 
     //holds String that gets sent into asynctask class for URL update
     private String mChangeOut = "";
@@ -66,13 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEditor;
 
     //holds sharedpreferences key
-    private String mSharedPreferencesKey = "movie sort";
+    private final String SHARED_PREF_KEY = "movie sort";
 
     //holds default sharedpreferences value
     private String mDefaultSharedPreferencesValue = "popular";
 
 
-    // TODO: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class
+    // DONE: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class
     //TESTING: PASSED
     // TODO: 3/15/2017 make variables local that don't need to be used by other functions/methods in your app
     // TODO: 3/15/2017 if have constants put the name in all caps and use appropriate modifier (FINAL) 
@@ -101,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             //get data from Bundle which will be the value of the Preference the user chose
             //edit the SharedPreference file so that it finds the ListPreference and adds the Preference object value the user chose
-            mEditor.putString(mSharedPreferencesKey, (String) savedInstanceState.getCharSequence(mPreferenceKey));
+            mEditor.putString(SHARED_PREF_KEY, (String) savedInstanceState.getCharSequence(PREFERENCE_KEY));
 
         }
 
         //if Bundle is empty means Activity is being run after being destroyed or upon install app
         else {
             //write the default value to SharedPreferences file
-            mEditor.putString(mSharedPreferencesKey, mDefaultSharedPreferencesValue);
+            mEditor.putString(SHARED_PREF_KEY, mDefaultSharedPreferencesValue);
 
         }
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set the string that goes into doInBackground so you can pass that string to create the URL that gets the data from the server
         //uses the value of the SharedPreferences file which should be "popular"
-        mUserSortDefault = mSharedPreferences.getString(mSharedPreferencesKey, "") ;
+        mUserSortDefault = mSharedPreferences.getString(SHARED_PREF_KEY, "") ;
 
         //TESTING: PASSED
         // DONE: 12/2/2016 add name of array that holds data
@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     //this activity needs to have an options menu to hold the settings menu/preference
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
+        //this creates the Menu bar option but does not provide settings fragment items as needed
         //inflates the menu so shows up in UI
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
@@ -178,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
     //TESTING: PASSED
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        //this creates the Menu bar option but does not provide settings fragment items as needed
         //gets the id of the item that was clicked on by user
         //if the id is the settings menu item
         if(item.getItemId() == R.id.menu_item) {
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //retrieve value from default SharedPreferences file
-        mChangeOut = mSharedPreferences.getString(mSharedPreferencesKey, "");
+        mChangeOut = mSharedPreferences.getString(SHARED_PREF_KEY, "");
 
         //use this value as input to execute a new thread and new task and pass the value into
         // doInBackground so can be used to create URL that gets data from server
@@ -233,10 +233,10 @@ public class MainActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //retrieve default value from SharedPreferences file
-        String prefToSave = mSharedPreferences.getString(mSharedPreferencesKey, "");
+        String prefToSave = mSharedPreferences.getString(SHARED_PREF_KEY, "");
 
         //save preference data to Bundle
-        outState.putCharSequence(mPreferenceKey, prefToSave);
+        outState.putCharSequence(PREFERENCE_KEY, prefToSave);
 
         //put this last because you want to send the Bundle into the method as this method saves the
         // Bundle...get the data you want to save then save the Bundle
@@ -473,6 +473,7 @@ public class MainActivity extends AppCompatActivity {
             final String badEncoding = "check InputStreamReader";
             final String badConnectionObject = "check HttpURLConnection";
             final String badIoException = "check connect() or readline()";
+            final String nullPointerException = "check connection object for null";
 
             //holds base URL and value of string that you passed into Asynctask
             final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/"+prefOption+"?";
@@ -572,8 +573,25 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
+
                 //close the connection you opened
-                connection.disconnect();
+                try {
+                    //close the connection to the server
+                    if(connection != null) {
+                        connection.disconnect();
+                    }
+
+                } //catch that exception AndroidOS passes to you and save it inside of the "npe" variable
+                catch (NullPointerException npe){
+                    //log the exception and don't crash the app
+                    Log.d(nullPointerException, "doInBackground: ");
+
+                    //return null if there is an exception so that you won't get an error when there is
+                    // no data returned but returned data is required by this method
+                    return null;
+
+                }
+
 
                 //return data that is being held inside of the variable "rawDataFromServer" which is the data you received from the stream
                 return rawDataFromServer;

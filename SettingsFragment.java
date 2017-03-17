@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 /**
  * Created by Kim Kirk on 1/5/2017.
  */
+
+//creates the Preference Fragment
 public class SettingsFragment extends PreferenceFragment {
 
     //// DONE: 1/15/2017 REFACTOR CODE: SEE BELOW

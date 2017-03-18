@@ -38,14 +38,9 @@ import java.util.ListIterator;
 public class MainActivity extends AppCompatActivity {
 
     //// DONE: 1/11/2017 check that these variable names fit with Android syntax convention (when to put mVariableName)
-    //holds gridview for activity layout
-    private GridView mGridView;
 
     //holds instance of asynctask
     private FetchMoviesTask mFetchMoviesTask = new FetchMoviesTask();
-
-    //holds the default user value for Preference object
-    private String mUserSortDefault = "";
 
     //holds custom array adapter
     private MovieImageAdapter mArrayAdapter;
@@ -56,29 +51,20 @@ public class MainActivity extends AppCompatActivity {
     //holds user preference key
     private final String PREFERENCE_KEY = "user preference";
 
-    //holds String that gets sent into asynctask class for URL update
-    private String mChangeOut = "";
 
     //holds sharedpreferences file
     private SharedPreferences mSharedPreferences;
 
-    //holds editor for editing sharedpreferences
-    private SharedPreferences.Editor mEditor;
-
     //holds sharedpreferences key
     private final String SHARED_PREF_KEY = "movie sort";
 
-    //holds default sharedpreferences value
-    private String mDefaultSharedPreferencesValue = "popular";
 
 
     // DONE: 2/10/2017 check all code from all Java classes for unnecessary variables: if only need to use the expression value in line of code in close proximity to expression, get rid of variable that holds the value and just use expression, unless use variable name in another line of code elsewhere in the class
-    //TESTING: PASSED
-    // TODO: 3/15/2017 make variables local that don't need to be used by other functions/methods in your app
-    // TODO: 3/15/2017 if have constants put the name in all caps and use appropriate modifier (FINAL) 
-    // TODO: 3/15/2017 move getDataFromServer method so that it is before getDataFromJSON method so that less skipping of lines when run doInBackground method?
-
+    // DONE: 3/15/2017 make variables local that don't need to be used by other functions/methods in your app
+    // DONE: 3/15/2017 if have constants put the name in all caps and use appropriate modifier (FINAL)
     //called by AndroidOS when activity first starts after install app and when activity created after being destroyed
+    //TESTING: PASSED
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //use super method because need to use all its functionality to get onCreate to work correctly
@@ -89,9 +75,14 @@ public class MainActivity extends AppCompatActivity {
         //in both cases whether the Bundle is full or not you need to get the SharedPreferences file and
         // an editor to edit the SharedPreferences file
         //retrieve SharedPreferences file that has the current default value for the Preferences object
-        //get an mEditor so you can make changes to SharedPreferences file
+        //get an editor so you can make changes to SharedPreferences file
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mEditor = mSharedPreferences.edit();
+
+        //holds editor for editing sharedpreferences
+        SharedPreferences.Editor editor;
+
+        //edit the SharedPreferences file
+        editor = mSharedPreferences.edit();
 
         //TESTING: PASSED
         // DONE: 1/13/2017 does not use user's current preference
@@ -101,23 +92,27 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             //get data from Bundle which will be the value of the Preference the user chose
             //edit the SharedPreference file so that it finds the ListPreference and adds the Preference object value the user chose
-            mEditor.putString(SHARED_PREF_KEY, (String) savedInstanceState.getCharSequence(PREFERENCE_KEY));
+            editor.putString(SHARED_PREF_KEY, (String) savedInstanceState.getCharSequence(PREFERENCE_KEY));
 
         }
 
         //if Bundle is empty means Activity is being run after being destroyed or upon install app
         else {
+
+            //holds default sharedpreferences value
+            String defaultSharedPreferencesValue = "popular";
             //write the default value to SharedPreferences file
-            mEditor.putString(SHARED_PREF_KEY, mDefaultSharedPreferencesValue);
+            editor.putString(SHARED_PREF_KEY, defaultSharedPreferencesValue);
 
         }
 
         //in both cases you will need to commit the changes made by the Editor
         //commit the changes or they will not be saved
-        mEditor.commit();
+        editor.commit();
 
         //set the string that goes into doInBackground so you can pass that string to create the URL that gets the data from the server
         //uses the value of the SharedPreferences file which should be "popular"
+        String mUserSortDefault;
         mUserSortDefault = mSharedPreferences.getString(SHARED_PREF_KEY, "") ;
 
         //TESTING: PASSED
@@ -125,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         //holds arrayadapter that is created using the MovieImageAdapter class constructor
         mArrayAdapter = new MovieImageAdapter(this, R.layout.activity_main, mArrayMovieDetails);
 
-        //holds the layout for this activity
-        mGridView = (GridView) findViewById(R.id.grid_view);
+        //holds gridview for activity layout
+        GridView mGridView = (GridView) findViewById(R.id.grid_view);
 
         //sets the arrayadapter on the layout for the activity so they are bound together
         mGridView.setAdapter(mArrayAdapter);
@@ -161,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         //starts the task for Asynctask so that a new thread and new task can begin and do work in
         // background of getting the URL data
         //sends in string to pass to doInBackground to be used to create URL to get data from server
+        //holds the default user value for Preference object
+
         startTask(mUserSortDefault);
     }
 
@@ -220,8 +217,11 @@ public class MainActivity extends AppCompatActivity {
         FetchMoviesTask newFetchMoviesTask = new FetchMoviesTask();
 
         //holds value of sharedpreference file for the preference object
-        // TODO: 3/15/2017 see if can instantiate this member variable at top of source file then just use variable name as needed throughout this Activity
+        // DONE: 3/15/2017 see if can instantiate this member variable at top of source file then just use variable name as needed throughout this Activity
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        //holds String that gets sent into asynctask class for URL update
+        String mChangeOut;
 
         //retrieve value from default SharedPreferences file
         mChangeOut = mSharedPreferences.getString(SHARED_PREF_KEY, "");
@@ -546,7 +546,9 @@ public class MainActivity extends AppCompatActivity {
 
                 //catch all of the possible exception types starting with most specialized to most generic
                 //catch each exception inside of its variable and log the exception but don't crash the app
-                // TODO: 3/15/2017 think about if need to create more code than just logging the error to make the app do a specific thing in case of exception?
+                // DONE: 3/15/2017 think about if need to create more code than just logging the error to make the app do a specific thing in case of exception?
+                //catch blocks will run if exception occurs then finally blocks will run and finally blocks and return the null needed because finally block
+                //runs last
             } catch (ProtocolException pr) {
                 Log.d(badProtocolRequest, "getDataFromServer: ");
             } catch (UnsupportedEncodingException uc) {

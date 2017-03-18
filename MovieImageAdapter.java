@@ -16,10 +16,6 @@ import java.util.ArrayList;
  */
 public class MovieImageAdapter extends ArrayAdapter {
     //DONE: figure out why need to override getItemId() method
-
-    //holds the string that has partial URL for image
-    private String mImageUrl;
-
     //constructor to create new MovieImageAdapter to be used to create a new array adapter that holds only MovieDetails objects
     //we create the constructor for the MovieImageAdapter class so that we can create a new object of
     // the class type and so we can pass the values to the superclass constructor and it can use
@@ -59,11 +55,14 @@ public class MovieImageAdapter extends ArrayAdapter {
             imageView = (ImageView) convertView;
         }
 
+
         // DONE: 12/18/2016 figure out if you need to turn into a string because value is already a String when check via debugging
         //gets item in arrayadapter at the specified position
         MovieDetails imageObject = (MovieDetails)getItem(position);
+
         // DONE: 1/25/2017  go into object and retrieve just the "image" string
-        mImageUrl = imageObject.mImage;
+        //holds the string that has partial URL for image
+        String imageUrl = imageObject.mImage;
 
         // DONE: 12/18/2016 figure out if you need to define this outside the method but inside the class
         //holds base URL to be added as prefix to string URL suffix from arrayadapter
@@ -71,7 +70,7 @@ public class MovieImageAdapter extends ArrayAdapter {
 
         //picasso will take each array data element and stick it into the View
         //load() gets the data, into() gets the View object to stick data into
-        Picasso.with(getContext()).load(baseURL + "/" + mImageUrl).into(imageView);
+        Picasso.with(getContext()).load(baseURL + "/" + imageUrl).into(imageView);
 
         //return the View back to the caller of this method because the View is what will be used to put on screen for UI
         return imageView;

@@ -11,12 +11,9 @@ import android.support.v4.app.FragmentActivity;
 public class DetailHostActivity extends FragmentActivity {
     //holds new instance of DetailFragment
     private DetailFragment mDetailFragment = new DetailFragment();
-    //holds DetailFragment returned from SupportFragmentManager
-    private DetailFragment mFragment;
 
 
-    // DONE: 3/1/2017 test this class to make sure the onCreate() runs correctly 
-
+    // DONE: 3/1/2017 test this class to make sure the onCreate() runs correctly
     //sets layout container in host Activity for Fragment and attaches Fragment to host Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +24,12 @@ public class DetailHostActivity extends FragmentActivity {
 
         //recreates mFragment instance
         if(savedInstanceState != null) {
-            // DONE: 3/7/2017 mFragment saved already had argument with data, so no need to create again in newInstance()
+            // DONE: 3/7/2017 fragment saved already had argument with data, so no need to create again in newInstance()
             //gets Fragment from Bundle
-            mFragment = (DetailFragment)getSupportFragmentManager().getFragment(savedInstanceState,"mFragment");
-            //replaces any current mFragment with new mFragment instance
-            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, mFragment).commit();
+            //holds DetailFragment returned from SupportFragmentManager
+            DetailFragment fragment = (DetailFragment)getSupportFragmentManager().getFragment(savedInstanceState,"fragment");
+            //replaces any current fragment with new fragment instance
+            getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, fragment).commit();
         }
         else {//if Bundle is empty then create new Fragment with arguments that set fields inside
             // Fragment and attach Fragment to host Activity
@@ -50,7 +48,7 @@ public class DetailHostActivity extends FragmentActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState){//saves mFragment instance before mFragment is killed
         //get the current Fragment instance from the SupportFragmentManager and put into Bundle
-        getSupportFragmentManager().putFragment(outState,"mFragment",getSupportFragmentManager().findFragmentById(R.id.detail_container));
+        getSupportFragmentManager().putFragment(outState,"fragment",getSupportFragmentManager().findFragmentById(R.id.detail_container));
         //save the Bundle
         super.onSaveInstanceState(outState);
     }

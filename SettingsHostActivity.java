@@ -8,8 +8,7 @@ import android.support.v4.app.FragmentActivity;
  */
 public class SettingsHostActivity extends FragmentActivity {
 
-    //holds the returned value of FragmentManager
-    private android.app.Fragment mFragment;
+
     //holds a newly created SettingsFragment instance
     private SettingsFragment mSettingsFragment = new SettingsFragment();
 
@@ -29,12 +28,13 @@ public class SettingsHostActivity extends FragmentActivity {
         if(savedInstanceState != null){
             //get the Fragment stored inside the Bundle of savedInstanceState
             //start transaction to replace any current Fragment with Fragment inside of mFragment
-            mFragment = getFragmentManager().getFragment(savedInstanceState,"mFragment");
+            //holds the returned value of FragmentManager;
+            android.app.Fragment mFragment = getFragmentManager().getFragment(savedInstanceState,"mFragment");
             getFragmentManager().beginTransaction().replace(R.id.container, mFragment).commit();
         }
-
+        //// DONE: 1/5/2017 this is not working, need to figure out how to add the mFragment
         //if the Bundle sent into onCreate method is empty then just attach the Settings Fragment to the host Activity
-        else {//// DONE: 1/5/2017 this is not working, need to figure out how to add the mFragment
+        else {
             //add Fragment to SettingHostActivity that shows Settings Menu
             //use getFragmentManager because you are using a Preference Fragment via SettingsFragment in
             // add(), Preference Fragment does not support supportFragmentManager because Preference Fragment created before

@@ -23,9 +23,6 @@ public class SettingsFragment extends PreferenceFragment {
     //holds mPreference returned from Preference Manager
     private Preference mPreference;
 
-    //holds data retrieved from Preference
-    private CharSequence mSummary;
-
     //holds key used to retrieve Preference data from Bundle
     private String mPrefSummaryKey = "mPreference mSummary";
 
@@ -133,15 +130,16 @@ public class SettingsFragment extends PreferenceFragment {
     //TESTING: PASSED
     @Override
     public void onSaveInstanceState (Bundle outState){
-        //get data from mPreference mSummary and save it to Bundle
+        //get data from Preference Summary and save it to Bundle
         //get mPreference
         mPreference = getPreferenceManager().findPreference(mPrefKey);
 
         //get mSummary
-        mSummary = mPreference.getSummary();
+        //holds data retrieved from Preference
+        CharSequence summary = mPreference.getSummary();
 
         //put it into Bundle
-        outState.putCharSequence(mPrefSummaryKey, mSummary);
+        outState.putCharSequence(mPrefSummaryKey, summary);
 
         //save the Bundle
         super.onSaveInstanceState(outState);

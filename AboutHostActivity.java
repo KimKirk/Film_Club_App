@@ -19,18 +19,17 @@ public class AboutHostActivity extends FragmentActivity {
         //recreates mFragment instance
         if (savedInstanceState != null) {
             //gets Fragment from Bundle
-            // TODO: 3/17/2017 this placeholder will correct when create About Fragment class
+            // DONE: 3/17/2017 this placeholder will correct when create About Fragment class
             Fragment fragment = getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
             //replaces any current mFragment with new mFragment instance
             getSupportFragmentManager().beginTransaction().replace(R.id.about_container, fragment).commit();
         }
-
         //if Bundle is empty then create new Fragment
         else {
             //create new About Fragment
             AboutFragment aboutFragment = new AboutFragment();
             //add Fragment to host Activity
-            // TODO: 3/17/2017 this will correct when create About Fragment class
+            // DONE: 3/17/2017 this will correct when create About Fragment class
             getSupportFragmentManager().beginTransaction().add(R.id.about_container, aboutFragment).commit();
         }
     }

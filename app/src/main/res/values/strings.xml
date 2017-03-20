@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="network_check">Network error. Check to make sure you are connected to the Internet.</string>
+    <string name="preference_title">Movie Sort</string>
+    <string name="default_movie_sort_value" translatable="false">popular</string>
+    <string name="list_preference_key" translatable="false">movie sort</string>
+    <string name="settings_menu">Settings</string>
+    <string name="about_menu">About</string>
+    <string name="about_attribution">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+
+
+</resources>

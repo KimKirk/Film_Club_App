@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:color">@color/colorPrimaryLight</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondaryInverse">@color/colorSecondaryText</item>
+        <item name="android:divider">@color/colorDivider</item>
+        <item name="android:windowBackground">@color/mainActivityBackground</item>
+    </style>
+
+</resources>

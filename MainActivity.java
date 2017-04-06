@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         //get user preference value
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        //retrieve default value from SharedPreferences file
+        //retrieve value from SharedPreferences file
         String prefToSave = mSharedPreferences.getString(SHARED_PREF_KEY, "");
 
         //save preference data to Bundle

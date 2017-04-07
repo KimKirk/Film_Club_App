@@ -30,12 +30,74 @@ public final class MoviesDatabase extends SQLiteOpenHelper {
         //create MovieID table
         final String SQL_CREATE_MOVIE_ID_TABLE =
                 "CREATE TABLE" + MovieContract.MovieID.TABLE_NAME +
-                        " (" + MovieContract.MovieID._ID + "INTEGER PRIMARY KEY," +
+                        " (" + MovieContract.MovieID._COUNT + "INTEGER " +
+                        MovieContract.MovieID._ID + "INTEGER PRIMARY KEY NOT NULL," +
                         MovieContract.MovieID.COLUMN_TITLE + "STRING NOT NULL," +
                         MovieContract.MovieID.COLUMN_IMAGE + "STRING NOT NULL," +
                         MovieContract.MovieID.COLUMN_OVERVIEW + "STRING NOT NULL," +
                         MovieContract.MovieID.COLUMN_RELEASE_DATE + "STRING NOT NULL," +
                         MovieContract.MovieID.COLUMN_VOTE_AVERAGE + "DOUBLE NOT NULL," + ")";
+
+        //create StatusID table
+        final String SQL_CREATE_STATUS_ID_TABLE =
+                "CREATE TABLE" + MovieContract.StatusID.TABLE_NAME +
+                        " (" +  MovieContract.StatusID._COUNT + "INTEGER," +
+                        MovieContract.StatusID._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.StatusID.COLUMN_STATUS + "STRING NOT NULL," + ")";
+
+        //create ReviewID table
+        final String SQL_CREATE_REVIEW_ID_TABLE =
+                "CREATE TABLE" + MovieContract.ReviewID.TABLE_NAME +
+                        " (" +  MovieContract.ReviewID._COUNT + "INTEGER," +
+                        MovieContract.ReviewID._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.ReviewID.COLUMN_REVIEW + "STRING NOT NULL," + ")";
+
+        //create TrailerID table
+        final String SQL_CREATE_TRAILER_ID_TABLE =
+                "CREATE TABLE" + MovieContract.TrailerID.TABLE_NAME +
+                        " (" +  MovieContract.TrailerID._COUNT + "INTEGER," +
+                        MovieContract.TrailerID._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.TrailerID.COLUMN_TRAILER + "STRING NOT NULL," + ")";
+
+        //create MovieStatus table
+        final String SQL_CREATE_MOVIE_STATUS_TABLE =
+                "CREATE TABLE" + MovieContract.MovieStatus.TABLE_NAME +
+                        "(" +  MovieContract.MovieStatus._COUNT + "INTEGER," +
+                        MovieContract.MovieStatus._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.MovieStatus.COLUMN_MOVIE + "INTEGER NOT NULL, FOREIGN KEY (" +
+                            MovieContract.MovieStatus.COLUMN_MOVIE + ") REFERENCES " + MovieContract.MovieID.TABLE_NAME +
+                            "(" + MovieContract.MovieID._ID + ")" +
+                        MovieContract.MovieStatus.COLUMN_STATUS + "INTEGER NOT NULL, FOREIGN KEY (" +
+                            MovieContract.MovieStatus.COLUMN_STATUS + ") REFERENCES " + MovieContract.StatusID.TABLE_NAME +
+                            "(" + MovieContract.StatusID._ID + ")" +
+                        ")";
+
+        //create MovieReviews table
+        final String SQL_CREATE_MOVIE_REVIEWS_TABLE =
+                "CREATE TABLE" + MovieContract.MovieReviews.TABLE_NAME +
+                        "(" +  MovieContract.MovieReviews._COUNT + "INTEGER," +
+                        MovieContract.MovieReviews._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.MovieReviews.COLUMN_MOVIE_ID + "INTEGER NOT NULL, FOREIGN KEY (" +
+                        MovieContract.MovieReviews.COLUMN_MOVIE_ID + ") REFERENCES " + MovieContract.MovieID.TABLE_NAME +
+                        "(" + MovieContract.MovieID._ID + ")" +
+                        MovieContract.MovieReviews.COLUMN_REVIEW_ID + "INTEGER NOT NULL, FOREIGN KEY (" +
+                        MovieContract.MovieReviews.COLUMN_REVIEW_ID + ") REFERENCES " + MovieContract.ReviewID.TABLE_NAME +
+                        "(" + MovieContract.ReviewID._ID + ")" +
+                        ")";
+
+        //create MovieTrailers table
+        final String SQL_CREATE_MOVIE_TRAILERS_TABLE =
+                "CREATE TABLE" + MovieContract.MovieTrailers.TABLE_NAME +
+                        "(" +  MovieContract.MovieTrailers._COUNT + "INTEGER," +
+                        MovieContract.MovieTrailers._ID + "INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        MovieContract.MovieTrailers.COLUMN_MOVIE_ID + "INTEGER NOT NULL, FOREIGN KEY (" +
+                        MovieContract.MovieTrailers.COLUMN_MOVIE_ID + ") REFERENCES " + MovieContract.MovieID.TABLE_NAME +
+                        "(" + MovieContract.MovieID._ID + ")" +
+                        MovieContract.MovieTrailers.COLUMN_TRAILER_ID + "INTEGER NOT NULL, FOREIGN KEY (" +
+                        MovieContract.MovieTrailers.COLUMN_TRAILER_ID + ") REFERENCES " + MovieContract.TrailerID.TABLE_NAME +
+                        "(" + MovieContract.TrailerID._ID + ")" +
+                        ")";
+
 
         //execute the SQL command that creates the table
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_ID_TABLE);

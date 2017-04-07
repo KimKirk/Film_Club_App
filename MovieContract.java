@@ -103,16 +103,17 @@ public final class MovieContract {
 
     }
 
+
     //creates labels for table name and columns in MovieStatus table
     public static final class MovieStatus implements BaseColumns {
         public static final String TABLE_NAME = "movie_status";
         public static final String _COUNT = "count";
-        //movie id stored as an integer
-        public static final String COLUMN_MOVIE = "movie_id";
-        //movie status id stored as an integer
-        public static final String COLUMN_STATUS = "status_id";
         //primary key is required on SQLite database tables
         public static final String _ID = "primary_key";
+        //movie id from MovieID table stored as an integer
+        public static final String COLUMN_MOVIE = "movie_id";
+        //status id from StatusID table stored as an integer
+        public static final String COLUMN_STATUS = "status_id";
 
         //uri
     }
@@ -120,9 +121,9 @@ public final class MovieContract {
     //creates labels for table name and columns in MovieReviews table
     public static final class MovieReviews implements BaseColumns{
         public static final String TABLE_NAME = "movie_reviews";
+        public static final String _COUNT = "count";
         //primary key is required on SQLite database tables
         public static final String _ID = "primary_key";
-        public static final String _COUNT = "count";
         //movie id stored as an integer
         public static final String COLUMN_MOVIE_ID = "movie_id";
         //movie review id stored as an integer
@@ -135,12 +136,12 @@ public final class MovieContract {
     public static final class MovieTrailers implements BaseColumns {
         public static final String TABLE_NAME = "movie_trailers";
         public static final String _COUNT = "count";
+        //primary key is required on SQLite database tables
+        public static final String _ID = "primary_key";
         //movie id stored as an integer
         public static final String COLUMN_MOVIE_ID = "movie_id";
         //movie trailer id stored as an integer
         public static final String COLUMN_TRAILER_ID = "trailer_id";
-        //primary key is required on SQLite database tables
-        public static final String _ID = "primary_key";
 
         //uri
     }

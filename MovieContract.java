@@ -1,5 +1,6 @@
 package com.spellflight.android.popularmovies;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -16,6 +17,8 @@ public final class MovieContract {
     //holds base content URI
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
+
+
     //private constructor so no one can instantiate this class
     private MovieContract() {
 
@@ -23,27 +26,63 @@ public final class MovieContract {
 
 
     //path to MovieID table
-    public static final String PATH_MOVIE_ID = "movie_id";
+    public static final String PATH_MOVIE_ID = "movieId";
     //path to StatusID table
-    public static final String PATH_STATUS_ID = "status_id";
+    public static final String PATH_STATUS_ID = "statusId";
     //path to ReviewID table
-    public static final String PATH_REVIEW_ID = "reviews_id";
+    public static final String PATH_REVIEW_ID = "reviewId";
     //path to TrailerID table
-    public static final String PATH_TRAILER_ID = "trailer_id";
+    public static final String PATH_TRAILER_ID = "trailerId";
     //path to MovieStatus table
-    public static final String PATH_MOVIE_STATUS = "movie_status";
+    public static final String PATH_MOVIE_STATUS = "movieStatus";
     //path to MovieReviews table
-    public static final String PATH_MOVIE_REVIEWS = "movie_reviews";
+    public static final String PATH_MOVIE_REVIEWS = "movieReviews";
     //path to MovieTrailers table
-    public static final String PATH_MOVIE_TRAILERS = "movie_trailers";
+    public static final String PATH_MOVIE_TRAILERS = "movieTrailers";
 
 
+    // DONE: 4/5/2017 figure out what is going to call this method and if that caller can pass in a string to this method
+    //builds moviestatus content uri
+    public Uri  buildMovieStatusUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_STATUS).build();
+    }
+
+    //builds movieid content uri
+    public Uri  buildMovieIdUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_ID).build();
+    }
+
+    //builds statusid content uri
+    public Uri  buildStatusIdUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_STATUS_ID).build();
+    }
+
+    //builds reviewid content uri
+    public Uri  buildReviewIdUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_REVIEW_ID).build();
+    }
+
+    //builds trailerid content uri
+    public Uri  buildTrailerIdUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRAILER_ID).build();
+    }
+
+    //builds moviereviews content uri
+    public Uri  buildMovieReviewsUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_REVIEWS).build();
+    }
+
+    //builds movietrailer content uri
+    public Uri  buildMovieTrailerUri () {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_TRAILERS).build();
+    }
 
 
     //MYNOTES: static for all inner classes so I don't have to use a reference to the outer class when
     //I want to use the inner class members in another class
     public static final class MovieID implements BaseColumns {
-        public static final String TABLE_NAME = "movie_id";
+
+        public static final String TABLE_NAME = "movieId";
         public static final String _COUNT = "count";
         //MYNOTES
         //this is the "id" element from the JSON array
@@ -60,53 +99,84 @@ public final class MovieContract {
         //movie voter average rating stored as a double
         public static final String COLUMN_VOTE_AVERAGE = "vote_average";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_ID;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_ID;
 
     }
 
     //creates labels for table name and columns in StatusID table
     public static final class StatusID implements BaseColumns {
-        public static final String TABLE_NAME = "status_id";
+        public static final String TABLE_NAME = "statusId";
         public static final String _COUNT = "count";
         //this is primary key - autoincrement
         public static final String _ID = "status_id";
         //movie list status "popular", "favorite", "top rated" stored as a String
         public static final String COLUMN_STATUS = "status";
 
-        //uri
+        // DONE: 4/26/2017 add reference to data type that this table has so that when you use gettype() method it knows
+        // DONE: 4/26/2017 do this for all other database tables as well
+        //mynotes: what data type gets returned for that database table
+        //The data type for each column in a provider is usually listed in its documentation.
+        /*Providers also maintain MIME data type information for each content URI they define.
+        You can use the MIME type information to find out if your application can handle data
+        that the provider offers, or to choose a type of handling based on the MIME type.
+        You usually need the MIME type when you are working with a provider that contains
+        complex data structures or files. For example, the ContactsContract.
+        Data table in the Contacts Provider uses MIME types to label
+        the type of contact data stored in each row. To get the MIME type corresponding to a content URI, call ContentResolver.getType().*/
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STATUS_ID;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STATUS_ID;
 
     }
 
     //creates labels for table name and columns in ReviewID table
     public static final class ReviewID implements BaseColumns {
-        public static final String TABLE_NAME = "review_id";
+        public static final String TABLE_NAME = "reviewId";
         public static final String _COUNT = "count";
         //this is primary key - autoincrement
         public static final String _ID = "review_id";
         //movie review URL stored as a String
         public static final String COLUMN_REVIEW = "review";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW_ID;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_REVIEW_ID;
+
 
     }
 
     //creates labels for table name and columns in TrailerID table
     public static final class TrailerID implements BaseColumns {
-        public static final String TABLE_NAME = "trailer_id";
+        public static final String TABLE_NAME = "trailerId";
         public static final String _COUNT = "count";
         //this is primary key - autoincrement
         public static final String _ID = "trailer_id";
         //movie trailer URL stored as a String
         public static final String COLUMN_TRAILER = "trailer";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILER_ID;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_TRAILER_ID;
 
     }
 
 
     //creates labels for table name and columns in MovieStatus table
     public static final class MovieStatus implements BaseColumns {
-        public static final String TABLE_NAME = "movie_status";
+        public static final String TABLE_NAME = "movieStatus";
         public static final String _COUNT = "count";
         //primary key is required on SQLite database tables
         public static final String _ID = "primary_key";
@@ -115,12 +185,19 @@ public final class MovieContract {
         //status id from StatusID table stored as an integer
         public static final String COLUMN_STATUS = "status_id";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_STATUS;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_STATUS;
+
+
     }
 
     //creates labels for table name and columns in MovieReviews table
     public static final class MovieReviews implements BaseColumns{
-        public static final String TABLE_NAME = "movie_reviews";
+        public static final String TABLE_NAME = "movieReviews";
         public static final String _COUNT = "count";
         //primary key is required on SQLite database tables
         public static final String _ID = "primary_key";
@@ -129,12 +206,19 @@ public final class MovieContract {
         //movie review id stored as an integer
         public static final String COLUMN_REVIEW_ID = "review_id";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_REVIEWS;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_REVIEWS;
+
+
     }
 
     //creates labels for table name and columns in MovieTrailers table
     public static final class MovieTrailers implements BaseColumns {
-        public static final String TABLE_NAME = "movie_trailers";
+        public static final String TABLE_NAME = "movieTrailers";
         public static final String _COUNT = "count";
         //primary key is required on SQLite database tables
         public static final String _ID = "primary_key";
@@ -143,17 +227,17 @@ public final class MovieContract {
         //movie trailer id stored as an integer
         public static final String COLUMN_TRAILER_ID = "trailer_id";
 
-        //uri
+        //holds the data type of the given columns content for the table
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_TRAILERS;
+        //holds the data type of the given columns content for the single row
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE_TRAILERS;
+
+
     }
 
 
-    //DESIGN: update this so it allows you to switch out path constant based on what goes
-    // in as string value then used in switch to determine which path constant gets used
-    // TODO: 4/5/2017 figure out what is going to call this method and if that caller can pass in a string to this method
-    // to be used to determine switch case to use
-    public Uri uriBuilder () {
-        return BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE_STATUS).build();
-    }
 
 
 }

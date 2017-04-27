@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //get data from arralist and populate the cusom array adapter
+        //get data from arraylist and populate the custom array adapter
         @Override
         protected void onPostExecute(ArrayList<MovieDetails> result) {
             if (result != null) {

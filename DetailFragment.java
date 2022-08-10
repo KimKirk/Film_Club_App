@@ -1,11 +1,13 @@
 package com.spellflight.android.popularmovies;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+//import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by Kim Kirk on 2/6/2017.
@@ -13,7 +15,7 @@ import android.widget.TextView;
 
 /*This class creates Detail Fragment that sets text for TextViews in UI*/
 
-public class DetailFragment extends Fragment{
+public class DetailFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState){

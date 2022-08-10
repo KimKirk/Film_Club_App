@@ -52,7 +52,7 @@ public class MovieImageAdapter extends ArrayAdapter {
         String baseURL = "https://image.tmdb.org/t/p/w500";
 
         //load() gets the data, into() gets the View object to stick data into
-        Picasso.with(getContext()).load(baseURL + "/" + imageUrl).placeholder(R.drawable.placeholder).error(R.drawable.error).into(imageView);
+        Picasso.get().load(baseURL + "/" + imageUrl).placeholder(R.drawable.placeholder).error(R.drawable.error).into(imageView);
 
 
         //return the View back to the caller will be used to put on screen for UI

@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
         public ArrayList<MovieDetails> getDataFromJson(String text) throws Exception {
 
             //holds log message for exception handling
-            final String badJson = "check JSON object or JSON array";
+            final String badJson = "chk JSON obj or array";
 
             //holds JSONObject that holds a JSONARrray data
             JSONObject jsonArrayJSONObject;
@@ -396,11 +396,11 @@ public class MainActivity extends AppCompatActivity {
 
             //holds log message for exception handling, gives info on specific method to check for error
             final String badUrl = "check URL";
-            final String badProtocolRequest = "check setRequestMethod()";
-            final String badEncoding = "check InputStreamReader";
-            final String badConnectionObject = "check HttpURLConnection";
-            final String badIoException = "check connect() or readline()";
-            final String nullPointerException = "check connection object for null";
+            final String badProtocolRequest = "chk setRequestMethod()";
+            final String badEncoding = "chk InputStreamReader";
+            final String badConnectionObject = "chk HttpURLConnection";
+            final String badIoException = "chk connect() or readline()";
+            final String nullPointerException = "chk connection object for null";
 
             //holds base URL and value of string that you passed into Fetch Movies Task
             final String MOVIE_BASE_URL = "https://api.themoviedb.org/3/movie/"+prefOption+"?";
